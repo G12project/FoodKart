@@ -1,0 +1,24 @@
+<h1>Menu</h1>
+
+<table border="1">
+<thead>
+    <tr>
+    <th>food</th>
+    <th>description</th>
+    <th>Edit</th>
+    <th>Delete</th>
+    </tr>
+</thead>
+<tbody>
+    {% for food in object_list %}
+    <tr>
+    <td>{{ food.food_name }}</td>
+    <td>{{ food.description }}</td>
+    <td><a href="{% url "updatefood" food.id %}">edit</a></td>
+    <td><a href="{% url "deletefood" food.id %}">delete</a></td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+
+<a href="{% url "addfood" %}">New</a>
