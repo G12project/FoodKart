@@ -46,3 +46,34 @@ def loginview(request):
 			messages.error(request,"Invalid username or password.")
 	form = AuthenticationForm()
 	return render(request=request, template_name="loginCustomer.html", context={"login_form":form})
+from django.shortcuts import render
+from django.views.generic import ListView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from .models import Menu
+from django.urls import reverse_lazy
+
+
+class Menulist(ListView):
+    model=Menu
+
+class AddFood(CreateView):
+    model=Menu
+    fields = [food_name,description,rating,food_image,veg,price]
+    success_url = reverse_lazy('menu_list')
+
+class UpdateFood(UpdateView):
+    model=Menu
+    fields=[food_name,description,rating,food_image,veg,price]
+    success_url=reverse_lazy('menu_list')
+
+class DeleteFood(DeleteView):
+    model=Menu
+    success_url=reverse_lazy('menu_list')
+
+
+
+
+
+
+    
+

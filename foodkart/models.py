@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from django.conf import settings
+from django.urls import reverse
 
 class User(AbstractUser):
 	is_customer = models.BooleanField(default=False)
@@ -41,3 +42,9 @@ class Menu(models.Model):
     food_image=models.ImageField(upload_to='images/')
     veg=models.BooleanField(default=True)
     price=models.IntegerField()
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('updatefood', kwargs={'pk': self.pk})
