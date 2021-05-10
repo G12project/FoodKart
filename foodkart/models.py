@@ -35,16 +35,16 @@ class DeliveryExec(models.Model):
 	avg_rating=models.IntegerField(default=0, null=True)
 # Create your models here.
 class Menu(models.Model):
-    restaurant_id=models.ForeignKey(Restaurant,on_delete=models.CASCADE)
+    restaurant_id=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     food_name=models.CharField(max_length=30)
     description=models.CharField(max_length=350)
-    rating=models.IntegerField()
+    rating=models.IntegerField(null=True)
     food_image=models.ImageField(upload_to='images/')
     veg=models.BooleanField(default=True)
     price=models.IntegerField()
 
-    def __str__(self):
-        return self.name
+    # def __str__(self):
+    #     return self.name
 
     def get_absolute_url(self):
         return reverse('updatefood', kwargs={'pk': self.pk})

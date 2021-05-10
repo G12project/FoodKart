@@ -40,7 +40,7 @@ class NewRestaurantForm(UserCreationForm):
 
 	def save(self):
 		user = super().save(commit=True)
-		user.is_customer = True
+		user.is_restaurant= True
 		user.save()
 		restaurant = Restaurant.objects.create(
 			user=user,
@@ -68,7 +68,7 @@ class NewDeliveryExecForm(UserCreationForm):
 
 	def save(self):
 		user = super().save(commit=True)
-		user.is_customer = True
+		user.is_delivery = True
 		user.save()
 		delivery_exec = DeliveryExec.objects.create(user=user, exec_name=self.cleaned_data['Fullname'], mobile=self.cleaned_data['Mobile'])
 		# customer['cus_name']=(self.cleaned_data.get('fullname'))

@@ -1,12 +1,15 @@
 from django.shortcuts import  render, redirect
 from .forms import NewCustomerForm, NewRestaurantForm, NewDeliveryExecForm
 from django.contrib.auth import login, authenticate,  logout
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages #import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
-from .models import User
+from .models import User, Menu
+from django.views.generic import ListView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, View
+from django.urls import reverse_lazy
+from django.contrib.auth.decorators import user_passes_test
 
 class CustomerRegisterView(CreateView):
 	model = User
@@ -46,34 +49,36 @@ def loginview(request):
 			messages.error(request,"Invalid username or password.")
 	form = AuthenticationForm()
 	return render(request=request, template_name="loginCustomer.html", context={"login_form":form})
-from django.shortcuts import render
-from django.views.generic import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Menu
-from django.urls import reverse_lazy
-
-
 class Menulist(ListView):
-    model=Menu
+	model=Menu
 
-class AddFood(CreateView):
-    model=Menu
-    fields = [food_name,description,rating,food_image,veg,price]
-    success_url = reverse_lazy('menu_list')
+class AddFood(CreateView, LoginRequiredMixin, UserPassesTestMixin):
+	def test_func(self):
+		return self.request.user.is_restaurant
+	model=Menu
+	fields = ['food_name','description','food_image','veg','price']
+	template_name='updatefood.html'
+	def form_valid(self, form):
+		form.instance.restaurant_id = self.request.user
+		return super().form_valid(form)
+	success_url = reverse_lazy('menu_list')
 
-class UpdateFood(UpdateView):
-    model=Menu
-    fields=[food_name,description,rating,food_image,veg,price]
-    success_url=reverse_lazy('menu_list')
+class UpdateFood(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
+	def test_func(self):
+		return self.request.user.is_restaurant
+	model=Menu
+	fields=['food_name','description','food_image','veg','price']
+	success_url=reverse_lazy('menu_list')
+class DeleteFood(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
+	def test_func(self):
+		return self.request.user.is_restaurant
+	model=Menu
+	success_url=reverse_lazy('menu_list')
 
-class DeleteFood(DeleteView):
-    model=Menu
-    success_url=reverse_lazy('menu_list')
 
 
 
 
 
 
-    
 
