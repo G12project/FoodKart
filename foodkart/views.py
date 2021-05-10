@@ -6,7 +6,7 @@ from django.contrib import messages #import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
 from .models import User, Menu
-from django.views.generic import ListView
+from django.views.generic import ListView,DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, View
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import user_passes_test
@@ -49,8 +49,11 @@ def loginview(request):
 			messages.error(request,"Invalid username or password.")
 	form = AuthenticationForm()
 	return render(request=request, template_name="loginCustomer.html", context={"login_form":form})
-class Menulist(ListView):
+class Menulist(ListView,LoginRequiredMixin, UserPassesTestMixin):
 	model=Menu
+	template_name='menu_list.html'
+	def get_queryset(self):
+        return Menu.objects.filter(restaurant_id=self.request.user)
 
 class AddFood(CreateView, LoginRequiredMixin, UserPassesTestMixin):
 	def test_func(self):
@@ -68,12 +71,54 @@ class UpdateFood(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
 		return self.request.user.is_restaurant
 	model=Menu
 	fields=['food_name','description','food_image','veg','price']
+	template_name='updatefood.html'
 	success_url=reverse_lazy('menu_list')
 class DeleteFood(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
 	def test_func(self):
 		return self.request.user.is_restaurant
 	model=Menu
+	template_name='deletefood.html'
 	success_url=reverse_lazy('menu_list')
+
+class Home(ListView,LoginRequiredMixin, UserPassesTestMixin):
+
+	model=Menu
+	template_name='home.html'
+
+	def test_func(self):
+		return self.request.user.is_customer
+	
+	def get_context_data(self, **kwargs):
+        con = super(Home, self).get_context_data(**kwargs)
+        con['search']=SearchForm()
+        return con
+
+class SearchFood(ListView,LoginRequiredMixin, UserPassesTestMixin):
+
+	model=Menu
+	template_name'Search.html'
+
+	def test_func(self):
+		return self.request.user.is_customer
+	def get_queryset(self):
+        food = self.request.GET.get('search','')
+        if not Menu.objects.filter(food_name=food).exists():
+            return None
+        object_list=Menu.objects.filter(food_name=food)
+        return object_list
+
+class DetailFood(DetailView,LoginRequiredMixin, UserPassesTestMixin):
+
+	model=Menu
+	template_name='Detail.html'
+	def test_func(self):
+		return self.request.user.is_customer
+
+	
+
+
+
+
 
 
 

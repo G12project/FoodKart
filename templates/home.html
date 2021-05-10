@@ -1,0 +1,30 @@
+
+{% block content %} 
+
+{% if user.is_authenticated %}
+    <a class="navbar-brand" href="#">{{user.username}}</a>
+<form method="GET" action="/search" class="form-inline">
+    {{ search }}                  
+    <button class="btn btn-outline-success"  type="submit">search</button>
+  </form>
+  <table border="1">
+    <thead>
+        <tr>
+        <th>food</th>
+        <th>description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for food in foods %}
+        <tr>
+        <td>{{ food.food_name }}</td>
+        <td>{{ food.description }}</td>
+ 
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+
+
+  {% endblock %}

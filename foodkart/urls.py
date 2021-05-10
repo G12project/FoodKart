@@ -14,6 +14,13 @@ urlpatterns = [
 	path('add', views.AddFood.as_view(), name='addfood'),
 	path('update/<int:pk>', views.UpdateFood.as_view(), name='updatefood'),
 	path('delete/<int:pk>', views.DeleteFood.as_view(), name='deletefood'),
+	path('detail/<int:pk>', views.DetailFood.as_view(), name='Detail'),
+	path('home', views.Home.as_view(), name='home'),
+	path('search', views.SearchFood.as_view(), name='Search'),
+	
+
+	
+
 	# path('logout/', views.logoutview, name="logout"),
 	# path('welcome/', views.Dashboardview.as_view(), name="welcome"),
 	# path('article/', views.CreateArticleview.as_view(), name="article"),

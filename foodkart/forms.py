@@ -76,4 +76,4 @@ class NewDeliveryExecForm(UserCreationForm):
 		delivery_exec.save()
 		return user
 class SearchForm(forms.Form):
-	user=forms.CharField()
+	search=forms.CharField()
