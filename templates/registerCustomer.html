@@ -13,11 +13,12 @@
 	<nav class="navbar navbar-light bg-dark">
 		<h1> Register </h1>
 	</nav>
+	{% load crispy_forms_tags %}
 	<div class="container py-5">
-		<form method="POST">
+		<form method="POST"  class="uniForm">
 			{% csrf_token %}
 			<div class="form-group">
-				{{ form.as_p }}
+				{{ form.as_p |crispy}}
 			</div>
 			<button class="btn btn-primary" type="submit">Register</button>
 		</form>

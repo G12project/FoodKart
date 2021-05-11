@@ -41,7 +41,10 @@ INSTALLED_APPS = [
     'foodkart',
     'captcha',
     'phonenumber_field',
+    'crispy_forms',
 ]
+
+CRISPY_TEMPLATE_PACK = 'uni_form'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

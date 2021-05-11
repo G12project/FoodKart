@@ -12,138 +12,110 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import user_passes_test
 
 class CustomerRegisterView(CreateView):
-	model = User
-	form_class=NewCustomerForm
-	template_name = 'registerCustomer.html'
-	def form_valid(self, form):
-		user = form.save()
-		return redirect('/')
+    model = User
+    form_class=NewCustomerForm
+    template_name = 'registerCustomer.html'
+    def form_valid(self, form):
+        user = form.save()
+        return redirect('/')
 class RestaurantRegisterView(CreateView):
-	model = User
-	form_class=NewRestaurantForm
-	template_name = 'registerRestaurant.html'
-	def form_valid(self, form):
-		user = form.save()
-		return redirect('/')
+    model = User
+    form_class=NewRestaurantForm
+    template_name = 'registerRestaurant.html'
+    def form_valid(self, form):
+        user = form.save()
+        return redirect('/')
 class DeliveryExecRegisterView(CreateView):
-	model = User
-	form_class=NewDeliveryExecForm
-	template_name = 'registerCustomer.html'
-	def form_valid(self, form):
-		user = form.save()
-		return redirect('/')
+    model = User
+    form_class=NewDeliveryExecForm
+    template_name = 'registerCustomer.html'
+    def form_valid(self, form):
+        user = form.save()
+        return redirect('/')
 def loginview(request):
-	if request.method == "POST":
-		form=AuthenticationForm(request, data=request.POST)
-		if form.is_valid():
-			username=form.cleaned_data.get('username')
-			password=form.cleaned_data.get('password')
-			user=authenticate(username=username, password=password)
-			if user is not None:
-				login(request, user)
-				messages.info(request, "You are now logged in as {username}.")
-				return redirect('/welcome')
-			else:
-				messages.error(request,"Invalid username or password.")
-		else:
-			messages.error(request,"Invalid username or password.")
-	form = AuthenticationForm()
-	return render(request=request, template_name="loginCustomer.html", context={"login_form":form})
-class Menulist(UserPassesTestMixin, ListView,LoginRequiredMixin):
-	model=Menu
-	template_name='menu_list.html'
-	def get_queryset(self):
-		return Menu.objects.filter(restaurant_id=self.request.user)
+    if request.method == "POST":
+        form=AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username=form.cleaned_data.get('username')
+            password=form.cleaned_data.get('password')
+            user=authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.info(request, "You are now logged in as {username}.")
+                return redirect('/welcome')
+            else:
+                messages.error(request,"Invalid username or password.")
+        else:
+            messages.error(request,"Invalid username or password.")
+    form = AuthenticationForm()
+    return render(request=request, template_name="loginCustomer.html", context={"login_form":form})
+class Menulist(ListView,LoginRequiredMixin, UserPassesTestMixin):
+    model=Menu
+    template_name='menu_list.html'
+    def get_queryset(self):
+        return Menu.objects.filter(restaurant_id=self.request.user)
 
-class AddFood(UserPassesTestMixin, CreateView, LoginRequiredMixin):
-	def test_func(self):
-		return self.request.user.is_restaurant
-	model=Menu
-	fields = ['food_name','description','food_image','veg','price']
-	template_name='updatefood.html'
-	def form_valid(self, form):
-		form.instance.restaurant_id = self.request.user
-		return super().form_valid(form)
-	success_url = reverse_lazy('menu_list')
+class AddFood(CreateView, LoginRequiredMixin, UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_restaurant
+    model=Menu
+    fields = ['food_name','description','food_image','veg','price']
+    template_name='updatefood.html'
+    def form_valid(self, form):
+        form.instance.restaurant_id = self.request.user
+        return super().form_valid(form)
+    success_url = reverse_lazy('menu_list')
 
-class UpdateFood(UserPassesTestMixin,UpdateView, LoginRequiredMixin):
-	def test_func(self):
-		return self.request.user.is_restaurant
-	model=Menu
-	fields=['food_name','description','food_image','veg','price']
-	template_name='updatefood.html'
-	success_url=reverse_lazy('menu_list')
-class DeleteFood(UserPassesTestMixin,DeleteView, LoginRequiredMixin):
-	def test_func(self):
-		return self.request.user.is_restaurant
-	model=Menu
-	template_name='deletefood.html'
-	success_url=reverse_lazy('menu_list')
+class UpdateFood(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_restaurant
+    model=Menu
+    fields=['food_name','description','food_image','veg','price']
+    template_name='updatefood.html'
+    success_url=reverse_lazy('menu_list')
+class DeleteFood(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_restaurant
+    model=Menu
+    template_name='deletefood.html'
+    success_url=reverse_lazy('menu_list')
 
-class Home( UserPassesTestMixin,ListView,LoginRequiredMixin):
-	def test_func(self):
-		return self.request.user.is_customer == True
-	model=Menu
-	template_name='home.html'
-	def get_context_data(self, **kwargs):
-		con = super(Home, self).get_context_data(**kwargs)
-		con['search']=SearchForm()
-		return con
+class Home(ListView,LoginRequiredMixin, UserPassesTestMixin):
+
+    model=Menu
+    template_name='home.html'
+    
+
+    def test_func(self):
+        return self.request.user.is_customer
+    
+    def get_context_data(self, **kwargs):
+        con = super(Home, self).get_context_data(**kwargs)
+        con['search']=SearchForm()
+        return con
 
 class SearchFood( UserPassesTestMixin,ListView,LoginRequiredMixin):
 
-	model=Menu
-	template_name='Search.html'
-	def test_func(self):
-		return self.request.user.is_customer
-	def get_queryset(self):
-		food = self.request.GET.get('search','')
-		print(food)
-		if not Menu.objects.filter(food_name=food).exists():
-			return None
-		object_list=Menu.objects.filter(food_name=food)
-		print(object_list)
-		return object_list
+    model=Menu
+    template_name='Search.html'
 
-class DetailFood( UserPassesTestMixin, DetailView,LoginRequiredMixin):
-	def test_func(self):
-		return self.request.user.is_customer
-	model=Menu
-	template_name='Detail.html'
+    def test_func(self):
+        return self.request.user.is_customer
+    def get_queryset(self):
+        food = self.request.GET.get('search','')
+        if not Menu.objects.filter(food_name=food).exists():
+            return None
+        object_list=Menu.objects.filter(food_name=food)
+        return object_list
 
-def additemview(request, pk=None):
-	if not request.user.is_authenticated or not request.user.is_customer:
-		return redirect('/')
-	if not Cart.objects.filter(customer_id=request.user, item=pk).exists():
-		item=Menu.objects.get(pk=pk)
-		adding= Cart.objects.create(customer_id=request.user, item=item)
-		adding.save()
-	return redirect('/mycart')
+class DetailFood(DetailView,LoginRequiredMixin, UserPassesTestMixin):
 
-class MyCart(UserPassesTestMixin, ListView, LoginRequiredMixin):
-	def test_func(self):
-		return self.request.user.is_customer
-	model=Menu
-	template_name="Cart.html"
-	def get_queryset(self):
-		id=Cart.objects.filter(customer_id=self.request.user).values('item')
-		id_list=[]
-		for item in id:
-			id_list.append(item)
-		print(id_list)
-		if not id:
-			return None
-		object_list=Menu.objects.filter(pk__in=id)
-		print(object_list)
-		return object_list
+    model=Menu
+    template_name='Detail.html'
+    def test_func(self):
+        return self.request.user.is_customer
 
-
-
-
-
-
-
-
+    
 
 
 
