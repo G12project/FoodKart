@@ -120,6 +120,7 @@ def additemview(request, pk=None, q=None):
     else:
         update=Cart.objects.get(customer_id=request.user, item=item)
         update.quantity=q
+        update.save()
     return redirect('/mycart')
 
 class MyCart(UserPassesTestMixin, ListView, LoginRequiredMixin):

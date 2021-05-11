@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from foodkart.models import Menu,DeliveryExec,Customer,Restaurant,User, Orders, Cart
-from foodkart.models import Menu
+from foodkart.models import Menu,DeliveryExec,Customer,Restaurant,User, Orders
+from foodkart.models import Menu, Cart
 
 class UserAdmin(admin.ModelAdmin):
 	model = User

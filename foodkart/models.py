@@ -60,4 +60,4 @@ class Orders(models.Model):
 class Cart(models.Model):
 	customer_id=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
 	item=models.ForeignKey(Menu, on_delete=models.CASCADE)
-	quantity=models.IntegerField()
+	quantity=models.IntegerField(default=1)
