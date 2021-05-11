@@ -49,13 +49,15 @@ def loginview(request):
             messages.error(request,"Invalid username or password.")
     form = AuthenticationForm()
     return render(request=request, template_name="loginCustomer.html", context={"login_form":form})
-class Menulist(ListView,LoginRequiredMixin, UserPassesTestMixin):
+class Menulist( UserPassesTestMixin, ListView,LoginRequiredMixin):
+    def test_func(self):
+        return self.request.user.is_restaurant
     model=Menu
     template_name='menu_list.html'
     def get_queryset(self):
         return Menu.objects.filter(restaurant_id=self.request.user)
 
-class AddFood(CreateView, LoginRequiredMixin, UserPassesTestMixin):
+class AddFood(UserPassesTestMixin, CreateView, LoginRequiredMixin):
     def test_func(self):
         return self.request.user.is_restaurant
     model=Menu
@@ -66,41 +68,35 @@ class AddFood(CreateView, LoginRequiredMixin, UserPassesTestMixin):
         return super().form_valid(form)
     success_url = reverse_lazy('menu_list')
 
-class UpdateFood(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
+class UpdateFood(UserPassesTestMixin, UpdateView, LoginRequiredMixin):
     def test_func(self):
         return self.request.user.is_restaurant
     model=Menu
     fields=['food_name','description','food_image','veg','price']
     template_name='updatefood.html'
     success_url=reverse_lazy('menu_list')
-class DeleteFood(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
+class DeleteFood( UserPassesTestMixin, DeleteView, LoginRequiredMixin):
     def test_func(self):
         return self.request.user.is_restaurant
     model=Menu
     template_name='deletefood.html'
     success_url=reverse_lazy('menu_list')
 
-class Home(ListView,LoginRequiredMixin, UserPassesTestMixin):
-
-    model=Menu
-    template_name='home.html'
-    
-
+class Home( UserPassesTestMixin, ListView,LoginRequiredMixin):
     def test_func(self):
         return self.request.user.is_customer
-    
+    model=Menu
+    template_name='home.html'
     def get_context_data(self, **kwargs):
         con = super(Home, self).get_context_data(**kwargs)
         con['search']=SearchForm()
         return con
 
 class SearchFood( UserPassesTestMixin,ListView,LoginRequiredMixin):
-
-    model=Menu
-    template_name='Search.html'
-
     def test_func(self):
         return self.request.user.is_customer
+    model=Menu
+    template_name='Search.html'
     def get_queryset(self):
         food = self.request.GET.get('search','')
         if not Menu.objects.filter(food_name=food).exists():
@@ -108,15 +104,40 @@ class SearchFood( UserPassesTestMixin,ListView,LoginRequiredMixin):
         object_list=Menu.objects.filter(food_name=food)
         return object_list
 
-class DetailFood(DetailView,LoginRequiredMixin, UserPassesTestMixin):
-
+class DetailFood( UserPassesTestMixin, DetailView,LoginRequiredMixin):
     model=Menu
     template_name='Detail.html'
     def test_func(self):
         return self.request.user.is_customer
 
-    
+def additemview(request, pk=None, q=None):
+    if not request.user.is_authenticated or not request.user.is_customer:
+        return redirect('/')
+    item=Menu.objects.get(pk=pk)
+    if not Cart.objects.filter(customer_id=request.user, item=item).exists():
+        adding= Cart.objects.create(customer_id=request.user, item=item, quantity=q)
+        adding.save()
+    else:
+        update=Cart.objects.get(customer_id=request.user, item=item)
+        update.quantity=q
+    return redirect('/mycart')
 
+class MyCart(UserPassesTestMixin, ListView, LoginRequiredMixin):
+	def test_func(self):
+		return self.request.user.is_customer
+	model=Menu
+	template_name="Cart.html"
+	def get_queryset(self):
+		id=Cart.objects.filter(customer_id=self.request.user).values('item')
+		id_list=[]
+		for item in id:
+			id_list.append(item)
+		print(id_list)
+		if not id:
+			return None
+		object_list=Menu.objects.filter(pk__in=id)
+		print(object_list)
+		return object_list
 
 
 
