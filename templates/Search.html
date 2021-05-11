@@ -1,10 +1,10 @@
 <table border="1">
     <thead>
         <tr>
-        <th>food</th>
-        <th>description</th>
+        <th>Food</th>
+        <th>Description</th>
         <th>Detail</th>
-        
+
         </tr>
     </thead>
     <tbody>
@@ -12,8 +12,7 @@
         <tr>
         <td>{{ food.food_name }}</td>
         <td>{{ food.description }}</td>
-        <td><a href="{% url "Detail" food.id %}">detail</a></td>
-        
+        <td><a href="/detail/{{food.id}}">Click to view</a></td>
         </tr>
         {% endfor %}
     </tbody>

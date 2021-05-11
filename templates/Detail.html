@@ -9,8 +9,7 @@
         <tr>
         <td>{{ object.food_name }}</td>
         <td>{{ object.description }}</td>
- 
+        <td><a href="/addcart/{{object.id}}">Add to Cart</a></td>
         </tr>
-        {% endfor %}
     </tbody>
     </table>

@@ -14,12 +14,14 @@ urlpatterns = [
 	path('add', views.AddFood.as_view(), name='addfood'),
 	path('update/<int:pk>', views.UpdateFood.as_view(), name='updatefood'),
 	path('delete/<int:pk>', views.DeleteFood.as_view(), name='deletefood'),
-	path('detail/<int:pk>', views.DetailFood.as_view(), name='Detail'),
+	path('detail/<int:pk>/', views.DetailFood.as_view(), name="detail"),
+	path('addcart/<int:pk>/', views.additemview, name="addtocart"),
 	path('home', views.Home.as_view(), name='home'),
 	path('search', views.SearchFood.as_view(), name='Search'),
-	
+	path('mycart', views.MyCart.as_view(), name='mycart'),
 
-	
+
+
 
 	# path('logout/', views.logoutview, name="logout"),
 	# path('welcome/', views.Dashboardview.as_view(), name="welcome"),

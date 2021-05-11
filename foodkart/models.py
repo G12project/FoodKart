@@ -3,6 +3,7 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from django.conf import settings
 from django.urls import reverse
+from jsonfield import JSONField
 
 class User(AbstractUser):
 	is_customer = models.BooleanField(default=False)
@@ -35,10 +36,10 @@ class DeliveryExec(models.Model):
 	avg_rating=models.IntegerField(default=0, null=True)
 # Create your models here.
 class Menu(models.Model):
-    restaurant_id=models.ForeignKey(Restaurant,on_delete=models.CASCADE)
+    restaurant_id=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     food_name=models.CharField(max_length=30)
     description=models.CharField(max_length=350)
-    rating=models.IntegerField()
+    rating=models.IntegerField(null=True)
     food_image=models.ImageField(upload_to='images/')
     veg=models.BooleanField(default=True)
     price=models.IntegerField()
@@ -48,3 +49,14 @@ class Menu(models.Model):
 
     def get_absolute_url(self):
         return reverse('updatefood', kwargs={'pk': self.pk})
+
+class Orders(models.Model):
+	restaurant_id=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name="user1")
+	customer_id=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name="user2")
+	exec_id=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name="user3")
+	items=JSONField()
+	total_price=models.IntegerField()
+
+class Cart(models.Model):
+	customer_id=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+	item=models.ForeignKey(Menu, on_delete=models.CASCADE)

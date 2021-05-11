@@ -1,0 +1,9 @@
+<tbody>
+	{% for food in object_list %}
+	<tr>
+		<td>{{ food.food_name }}</td>
+		<td>{{ food.description }}</td>
+		<td><a href="/detail/{{food.id}}">Click to view</a></td>
+	</tr>
+	{% endfor %}
+</tbody>
