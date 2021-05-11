@@ -121,10 +121,10 @@ tfoot {
 }
 
 .card {
-  border-radius: 1em;
-  background-color: var(--color-primary);
-  color: #fff;
-  padding: 1em;
+  border-radius: 5em;
+  background-color: none;
+  color: rgb(216, 163, 163);
+  padding: .5em;
 }
 
 .form {
@@ -161,10 +161,10 @@ tfoot {
 }
 
 .icon {
-  block-size: 1em;
+  block-size: 2em;
   display: inline-block;
   fill: currentColor;
-  inline-size: 1em;
+  inline-size: 2em;
   vertical-align: middle;
 }
 
