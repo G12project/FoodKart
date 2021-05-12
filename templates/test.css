@@ -1,9 +1,8 @@
 body {
 	 margin: 3em;
 }
-h1 { text-align:center;
-	
-	
+h1{text-align: center;
+	font-family:sofia; 
 	}
  @media (max-width: 785px) {
 	 body {
@@ -177,6 +176,7 @@ h1 { text-align:center;
  .form_fieldBlock {
 	 margin-bottom: 25px;
 	 position: relative;
+	 font-family:sofia
 }
  .form_fieldBlock .form_fieldBlock {
 	 margin-top: 25px;
@@ -258,6 +258,7 @@ h1 { text-align:center;
 }
  .form_checkBox input {
 	 display: none;
+	 font-family:sofia
 }
  .form_checkBox input:checked + label {
 	 background-color: pink;
@@ -265,6 +266,7 @@ h1 { text-align:center;
 }
  .form_checkBox input:checked + label:after {
 	 content: 'x';
+	 font-family:sofia
 	 color: black;
 	 text-align: center;
 	 font-size: 30px;
@@ -319,8 +321,28 @@ h1 { text-align:center;
 		 position: relative;
 		 top: 11px;
 	}
-}
+}a
  .firstSection .form_menuItem:not(.firstItem) {
 	 max-width: 100%;
 }
  
+ ._JS_containsR{
+ 	font-family:sofia;
+
+ }
+ ._JS_addSection{
+ 	font-family:sofia;
+
+ }
+ ._JS_reset{
+ 	
+ 	font-family:sofia;
+ 	
+ }
+ a:link {
+  
+  
+  text-align: center;
+  text-decoration: none;
+  
+}
