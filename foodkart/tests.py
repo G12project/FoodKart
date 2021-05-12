@@ -1,8 +1,8 @@
-from django.test import TestCase
+from django.test import TestCase,RequestFactory
 
 # Create your tests here.
 from .models import Restaurant,Customer,DeliveryExec,Menu
-
+from .views import Home
 
 class RestaurantTest(TestCase):
 
@@ -35,6 +35,7 @@ class MenuTest(TestCase):
 #         view.setup(request)
 
 #         context = view.get_context_data()
+#         view.object_list = view.get_queryset()
 #         self.assertIn(context)
 
 class viewTests(TestCase):

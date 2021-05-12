@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>order list</title>
+<script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-database.js"></script>
+
+</head>
+<body>
+	<table>
+		<th>CustomerName</th>
+    <th>Foodname</th>
+	</table>
+	 <table class="table table-striped" id="ex-table">
+  <tr id="tr">
+    <th>CustomerName</th>
+    <th>Foodname</th>
+  </tr>
+</table>
+</body>
+<script>
+	var firebaseConfig = {
+    apiKey: "AIzaSyDfGQmsSdjAM77R7g4rkCa_d7FXsaPcl_I",
+    authDomain: "test2-374dc.firebaseapp.com",
+    databaseURL: "https://test2-374dc-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "test2-374dc",
+    storageBucket: "test2-374dc.appspot.com",
+    messagingSenderId: "900145299510",
+    appId: "1:900145299510:web:baed02e2b01bd767225897"
+};
+firebase.initializeApp(firebaseConfig);
+var db=firebase.database();
+var events=db.ref('Orders');
+console.log(events);
+var query=events.orderByChild('rest_id').equalTo("21");
+
+query.on('value',function(snapshot){
+	      if(snapshot.exists()){  
+        var content = '';
+         
+          snapshot.forEach(function(data){
+              var Customername = data.val().cust_name;
+              
+              content += '<tr>';
+              content += '<td>' + Customername + '</td>';
+             
+              content += '</tr>';
+ 
+         });
+
+$('#ex-table').html(content);
+}
+});
+
+</script>
+</html>
