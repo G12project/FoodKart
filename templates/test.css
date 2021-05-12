@@ -1,6 +1,10 @@
 body {
 	 margin: 3em;
 }
+h1 { text-align:center;
+	
+	
+	}
  @media (max-width: 785px) {
 	 body {
 		 margin: 1em;
