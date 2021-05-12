@@ -42,9 +42,10 @@ query.on('value',function(snapshot){
          
           snapshot.forEach(function(data){
               var Customername = data.val().cust_name;
-              
+              var orderid=data.val().orderid;
               content += '<tr>';
               content += '<td>' + Customername + '</td>';
+		  content += '<td>' + orderid + '</td>';
              
               content += '</tr>';
  
