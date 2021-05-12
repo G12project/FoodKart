@@ -130,7 +130,7 @@ body {
 	 margin-top: 10px;
 }
  .form {
-	 width: 100%;
+	 width: 30%;
 	 text-align: right;
 	 max-width: 1185px;
 	 margin: 0 auto;
@@ -226,8 +226,8 @@ body {
 	 text-align: left;
 	 line-height: 3;
 	 cursor: pointer;
-	 max-width: 50%;
-	 min-width: 405px;
+	 max-width: 30%;
+	 min-width: 25%;
 	 float:left;
 }
  .form_checkBox label:after {
