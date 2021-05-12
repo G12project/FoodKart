@@ -62,6 +62,7 @@ class NewRestaurantForm(UserCreationForm):
 class NewDeliveryExecForm(UserCreationForm):
 	Fullname = forms.CharField(max_length=100)
 	Mobile = PhoneNumberField()
+	Captcha = CaptchaField()
 	class Meta:
 		model = User
 		fields=("username", "email" ,"password1", "password2")

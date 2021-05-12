@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages #import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
-from .models import User, Menu, Cart, Customer, Restaurant
+from .models import User, Menu, Cart, Customer, Restaurant, addresses
 from django.views.generic import ListView,DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, View
 from django.urls import reverse_lazy
@@ -33,7 +33,8 @@ class DeliveryExecRegisterView(CreateView):
     template_name = 'registerCustomer.html'
     def form_valid(self, form):
         user = form.save()
-        return redirect('/')
+        login(self.request, user)
+        return redirect('/permittrack')
 def loginview(request):
     if request.method == "POST":
         form=AuthenticationForm(request, data=request.POST)
@@ -44,6 +45,10 @@ def loginview(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, "You are now logged in as {username}.")
+                if user.is_delivery:
+                    return redirect('/delhome')
+                elif user.is_restaurant:
+                    return redirect('/resthome')
                 return redirect('/home')
             else:
                 messages.error(request,"Invalid username or password.")
@@ -51,6 +56,10 @@ def loginview(request):
             messages.error(request,"Invalid username or password.")
     form = AuthenticationForm()
     return render(request=request, template_name="loginCustomer.html", context={"login_form":form})
+def permittrackview(request):
+    if not request.user.is_authenticated or not request.user.is_delivery:
+        return redirect('/')
+    return render(request=request, template_name="trackDel.html")
 class Menulist( UserPassesTestMixin, ListView,LoginRequiredMixin):
     def test_func(self):
         return self.request.user.is_restaurant
@@ -68,7 +77,7 @@ class AddFood(UserPassesTestMixin, CreateView, LoginRequiredMixin):
     def form_valid(self, form):
         form.instance.restaurant_id = self.request.user
         return super().form_valid(form)
-    success_url = reverse_lazy('menu_list')
+    success_url = reverse_lazy('/resthome')
 
 class UpdateFood(UserPassesTestMixin, UpdateView, LoginRequiredMixin):
     def test_func(self):
@@ -93,6 +102,13 @@ class Home( UserPassesTestMixin, ListView,LoginRequiredMixin):
         con = super(Home, self).get_context_data(**kwargs)
         con['search']=SearchForm()
         return con
+
+class DelHome( UserPassesTestMixin, LoginRequiredMixin, View):
+    template_name='homeDel.html'
+    def test_func(self):
+        return self.request.user.is_delivery
+    def get(self, request):
+        return render(request, self.template_name)
 
 class SearchFood( UserPassesTestMixin,ListView,LoginRequiredMixin):
     def test_func(self):
@@ -160,8 +176,12 @@ def ordersummaryview(request):
             restaurants[item['restaurant_id']]['pickuplat']=res.latitude
             restaurants[item['restaurant_id']]['pickuplong']=res.longitude
         restaurants[item['restaurant_id']]['items'][item['food_name']]=item['price']
-    print( json.dumps(restaurants, cls=DjangoJSONEncoder))
-    return render(request=request, template_name="order.html", context={"info":json.dumps(info, cls=DjangoJSONEncoder), "rests":json.dumps(restaurants, cls=DjangoJSONEncoder)})
+    address=addresses.objects.filter(customer_id=request.user).values('latitude', 'longitude')
+    alladdress={}
+    for add in address:
+        alladdress
+    print( json.dumps(alladdress, cls=DjangoJSONEncoder))
+    return render(request=request, template_name="order.html", context={"info":json.dumps(info, cls=DjangoJSONEncoder), "rests":json.dumps(restaurants, cls=DjangoJSONEncoder), "address": json.dumps(alladdress, cls=DjangoJSONEncoder)})
 
 
 

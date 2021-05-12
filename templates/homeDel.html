@@ -1,0 +1,98 @@
+<html>
+<head>
+	<script src='https://unpkg.com/@turf/turf/turf.min.js'></script>
+	<script src='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js'></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+<h1>Welcome {{user.id}}</h1>
+<table class="table table-striped" id="ex-table">
+	<tr id="tr">
+		<th>CustomerName</th>
+		<th>Foodname</th>
+	</tr>
+</table>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js"></script>
+
+<script>
+	function success(position){
+		const latitude = position.coords.latitude;
+		const longitude = position.coords.longitude;
+		console.log(latitude+" "+longitude);
+		var firebaseConfig = {
+			apiKey: "AIzaSyDfGQmsSdjAM77R7g4rkCa_d7FXsaPcl_I",
+			authDomain: "test2-374dc.firebaseapp.com",
+			databaseURL: "https://test2-374dc-default-rtdb.asia-southeast1.firebasedatabase.app",
+			projectId: "test2-374dc",
+			storageBucket: "test2-374dc.appspot.com",
+			messagingSenderId: "900145299510",
+			appId: "1:900145299510:web:baed02e2b01bd767225897"
+		};
+		if (!firebase.apps.length) {
+			firebase.initializeApp(firebaseConfig);
+		} else {
+			firebase.app(); // if already initialized, use that one
+		}
+		var db = firebase.database();
+		var events = db.ref('Orders');
+		query=events.orderByChild('rest_id');
+		events.on('value',function(snapshot){
+	      if(snapshot.exists()){
+			var content = '';
+          snapshot.forEach(function(data){
+			var restaurantname = data.val().rest_name;
+			var Customername = data.val().cust_name;
+			var orderid=data.key;
+			var pickuplat=data.val().pickuplat;
+			var pickuplong=data.val().pickuplong;
+			var dist=getdistance(latitude, longitude, pickuplat, pickuplong);
+			if(dist<5){
+			content += '<tr>';
+			content += '<td>' + orderid + '</td>';
+			content += '<td>' + restaurantname + '</td>';
+			content += '<td>' + Customername + '</td>';
+			content += '<td>' + dist + '</td>';
+			content += '</tr>';
+			}
+		 });
+		 $('#ex-table').html(content);
+		}
+	});
+}
+
+	function error() {
+	alert('Sorry, no position available.');
+	}
+
+	const options = {
+	enableHighAccuracy: true,
+	maximumAge: 30000,
+	timeout: 27000
+	};
+
+	const watchID = navigator.geolocation.watchPosition(success, error, options);
+</script>
+<script>
+	function getdistance(lat1, lng1, lat2, lng2){
+		mapboxgl.accessToken = 'pk.eyJ1IjoibWpkYW5pZWxzb24iLCJhIjoiY2tkNm4wMTdoMml2bDJzbXlvZGp4YW0xcyJ9.gVoNxvWvLwK2Ev6ukzArsQ';
+		var to = [lng1, lat1] //lng, lat
+		var from = [lng2, lat2] //lng, lat
+		var options1 = {
+			units: 'kilometers'
+		}; // units can be degrees, radians, miles, or kilometers, just be sure to change the units in the text box to match.
+
+		var distance = turf.distance(to, from, options1);
+
+		return distance;
+	}
+
+</script>
+</body>
+</html>

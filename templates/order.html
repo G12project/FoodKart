@@ -3,6 +3,9 @@
 	<title>try</title>
 </head>
 <body>
+	<button id="add" onclick="showadd()">Your Addresses</button>
+	<table id="address"></table>
+	<button id="locate">Find Me</button>
 	<button onclick="writeOrder()"> order </button>
 
 <!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -13,6 +16,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-analytics.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-database.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <script>
 			// For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -37,10 +41,10 @@
 		for(k in rests){
 				console.log(rests[k]['rest_name']);
 				firebase.database().ref('Orders/').push().set({
-					rest_id: k,
+					rest_id: parseInt(k),
 					rest_name: rests[k]['rest_name'],
-					pickuplat: rests[k]['pickuplat'],
-					pickuplong: rests[k]["pickuplong"],
+					pickuplat: parseFloat(rests[k]['pickuplat']),
+					pickuplong: parseFloat(rests[k]["pickuplong"]),
 					cust_id: info["cust_id"],
 					cust_name: info["cust_name"],
 					curr_status : 'Order_placed'
@@ -52,6 +56,50 @@
 			});
 		 }
 	}
+</script>
+<script>
+	function geoFindMe(){
+
+			function success(position) {
+				lat= position.coords.latitude;
+				long= position.coords.longitude;
+				const url= "https://api.mapbox.com/geocoding/v5/mapbox.places/"+long+","+lat+".json?access_token=pk.eyJ1IjoieWFzaDQ1NTYiLCJhIjoiY2tvaG9hbXdnMTFpYzJub2MxOXJ5emxyNyJ9.EWWBTTl5gYAZ_HRXhoSEew";
+				$.getJSON(url,function(ans){
+					console.log(ans.features[0].place_name);
+				});
+
+			}
+
+			function error() {
+				status.textContent = 'Unable to retrieve your location';
+			}
+
+			if (!navigator.geolocation) {
+				status.textContent = 'Geolocation is not supported by your browser';
+			} else {
+				status.textContent = 'Locating…';
+				navigator.geolocation.getCurrentPosition(success, error);
+			}
+
+		}
+		document.querySelector('#locate').addEventListener('click', geoFindMe);
+</script>
+<script>
+	function showadd(){
+	var add= JSON.parse("{{ address |escapejs }}");
+	var content="";
+	for(k in add){
+		var p="";
+		const url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + add[k]['long'] + "," + add[k]['lat'] + ".json?access_token=pk.eyJ1IjoieWFzaDQ1NTYiLCJhIjoiY2tvaG9hbXdnMTFpYzJub2MxOXJ5emxyNyJ9.EWWBTTl5gYAZ_HRXhoSEew";
+		$.getJSON(url, function (ans) {
+			p=ans.features[0].place_name;
+		});
+		content += '<tr>';
+			content += '<td>' +p+ '</td>';
+			content += '</tr>';
+	}
+	$('#ex-table').html(content);
+}
 </script>
 </body>
 </html>

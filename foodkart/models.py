@@ -70,3 +70,8 @@ class Cart(models.Model):
     customer_id=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     item=models.ForeignKey(Menu, on_delete=models.CASCADE)
     quantity=models.IntegerField(default=1)
+
+class addresses(models.Model):
+    latitude=models.DecimalField(max_digits=30, decimal_places=25)
+    longitude=models.DecimalField(max_digits=30, decimal_places=25)
+    customer_id=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

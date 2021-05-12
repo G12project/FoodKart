@@ -10,19 +10,7 @@
 </style>
 
 <body>
-	<nav class="navbar navbar-light bg-dark">
-		<h1> Register </h1>
-	</nav>
-	{% load crispy_forms_tags %}
-	<div class="container py-5">
-		<form method="POST"  class="uniForm">
-			{% csrf_token %}
-			<div class="form-group">
-				{{ form.as_p |crispy}}
-			</div>
-			<button class="btn btn-primary" type="submit">Register</button>
-		</form>
-	</div>
+
 	<!-- the upper code is related to backend and lower one is template for these file-->
 	<div class="container-fluid">
     <div class="row no-gutter">
@@ -42,26 +30,12 @@
                         <div class="col-lg-10 col-xl-7 mx-auto">
                             <h3 class="display-4">FOODKART</h3>
                             <p class="text-muted mb-4">SIGN UP</p>
-                            <form>
-                                <div class="form-group mb-3">
-                                    <input id="inputname" type="text" placeholder="fullname" required="" autofocus="" class="form-control rounded-pill border-0 shadow-sm px-4">
+                            <form method="POST" class="uniForm">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    {{ form.as_p }}
                                 </div>
-                                <div class="form-group mb-3">
-                                    <input id="inputEmail" type="email" placeholder="Email address" required="" autofocus="" class="form-control rounded-pill border-0 shadow-sm px-4">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <input id="inputPassword" type="password" placeholder="Password" required="" class="form-control rounded-pill border-0 shadow-sm px-4 text-primary">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <input id="retypePassword" type="password" placeholder="retypePassword" required="" class="form-control rounded-pill border-0 shadow-sm px-4 text-primary">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <input id="inputmobile" type="number" placeholder="mobile no." required="" autofocus="" class="form-control rounded-pill border-0 shadow-sm px-4">
-                                </div>
-                                
-                                
-                                <button type="submit" class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm">register</button>
-                                
+                                <button class="btn btn-primary" type="submit">Register</button>
                             </form>
                         </div>
                     </div>

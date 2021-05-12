@@ -1,0 +1,75 @@
+<html>
+
+<head>
+	<title>try</title>
+</head>
+
+<body>
+	<button id='locate'> track me</button>
+	<a href="/delhome">Home</a>
+	<!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js"></script>
+
+	<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+	<script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-analytics.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-database.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js"></script>
+
+	<script>
+		// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+		// function Redirect(){
+		// 	window.location="delhome";
+		// }
+		function geoFindMe() {
+				// const status = document.querySelector('#status');
+				// const mapLink = document.querySelector('#map-link');
+
+				// mapLink.href = '';
+				// mapLink.textContent = '';
+				function success(position) {
+					var latitude = position.coords.latitude;
+					var longitude = position.coords.longitude;
+					var firebaseConfig = {
+						apiKey: "AIzaSyDfGQmsSdjAM77R7g4rkCa_d7FXsaPcl_I",
+						authDomain: "test2-374dc.firebaseapp.com",
+						databaseURL: "https://test2-374dc-default-rtdb.asia-southeast1.firebasedatabase.app",
+						projectId: "test2-374dc",
+						storageBucket: "test2-374dc.appspot.com",
+						messagingSenderId: "900145299510",
+						appId: "1:900145299510:web:baed02e2b01bd767225897"
+					};
+					firebase.initializeApp(firebaseConfig);
+					// firebase.analytics();
+					firebase.database().ref('DeliveryExec/' + "{{user.id}}").set({
+						currlat: latitude,
+						currlong: longitude,
+						is_busy: false
+					});
+					var showCurrentData = firebase.database().ref('DeliveryExec');
+					showCurrentData.on('value', (snapshot) => {
+						const data = snapshot.val();
+						console.log(data);
+					});
+						// Move to a new location or you can do something else
+					// Redirect();
+
+				}
+
+				function error() {
+					status.textContent = 'Unable to retrieve your location';
+				}
+
+				if (!navigator.geolocation) {
+					status.textContent = 'Geolocation is not supported by your browser';
+				} else {
+					status.textContent = 'Locating…';
+					navigator.geolocation.getCurrentPosition(success, error);
+				}
+
+			}
+			document.querySelector('#locate').addEventListener('click', geoFindMe);
+	</script>
+</body>
+
+</html>

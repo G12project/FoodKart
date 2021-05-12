@@ -10,7 +10,7 @@ urlpatterns = [
 	path('', views.loginview, name="login"),
 	path('registerres/', views.RestaurantRegisterView.as_view(), name="resregister"),
 	path('registerdel/', views.DeliveryExecRegisterView.as_view(), name="delregister"),
-	path('view', views.Menulist.as_view(), name='menu_list'),
+	path('resthome', views.Menulist.as_view(), name='menu_list'),
 	path('add', views.AddFood.as_view(), name='addfood'),
 	path('update/<int:pk>', views.UpdateFood.as_view(), name='updatefood'),
 	path('delete/<int:pk>', views.DeleteFood.as_view(), name='deletefood'),
@@ -20,6 +20,8 @@ urlpatterns = [
 	path('search', views.SearchFood.as_view(), name='Search'),
 	path('mycart', views.MyCart.as_view(), name='mycart'),
 	path('ordersummary', views.ordersummaryview, name='ordersummary'),
+	path('delhome', views.DelHome.as_view(), name='delhome'),
+	path('permittrack', views.permittrackview, name='permittrack'),
 
 
 
