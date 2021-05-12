@@ -10,6 +10,8 @@
 	<link rel="stylesheet"
 		href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css"
 		type="text/css" />
+		{% load static %}
+		<script type="text/javascript" src="{% static 'js/findlocation.js' %}"></script>
 </head>
 
 <body>
@@ -71,7 +73,7 @@
 			<button class="btn btn-primary" type="submit">Register</button>
 		</form>
 	</div>
-	<script type="text/javascript">
+	<!-- <script type="text/javascript">
 		function geoFindMe() {
 
 				function showPosition(position){
@@ -114,6 +116,7 @@
 
 			}
 			document.querySelector('#locate').addEventListener('click', geoFindMe);
-	</script>
+	</script> -->
+
 </body>
 </html>

@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages #import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
-from .models import User, Menu, Cart
+from .models import User, Menu, Cart, Customer, Restaurant
 from django.views.generic import ListView,DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, View
 from django.urls import reverse_lazy
@@ -139,6 +139,29 @@ class MyCart(UserPassesTestMixin, ListView, LoginRequiredMixin):
 		object_list=Menu.objects.filter(pk__in=id)
 		print(object_list)
 		return object_list
+def ordersummaryview(request):
+    if not request.user.is_authenticated or not request.user.is_customer:
+        return redirect('/')
+    info={}
+    cust=Customer.objects.get(user=request.user)
+    info['cust_id']=request.user.pk
+    info['cust_name']=cust.cus_name
+    items=Menu.objects.filter(cart__customer_id=request.user).values('food_name', 'price', 'restaurant_id')
+    print(items)
+    restaurants={}
+    for item in items:
+        if item['restaurant_id'] not in restaurants:
+            restaurants[item['restaurant_id']]={}
+            res=Restaurant.objects.get(pk=item['restaurant_id'])
+            restaurants[item['restaurant_id']]['pickuplat']=res.res_name
+            restaurants[item['restaurant_id']]['pickuplat']=res.latitude
+            restaurants[item['restaurant_id']]['pickuplong']=res.longitude
+        restaurants[item['restaurant_id']][item['food_name']]=item['price']
+    info['restaurants']=restaurants
+    print(info)
+
+
+
 
 
 

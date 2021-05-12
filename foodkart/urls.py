@@ -19,6 +19,7 @@ urlpatterns = [
 	path('home', views.Home.as_view(), name='home'),
 	path('search', views.SearchFood.as_view(), name='Search'),
 	path('mycart', views.MyCart.as_view(), name='mycart'),
+	path('ordersummary', views.ordersummaryview, name='ordersummary'),
 
 
 
