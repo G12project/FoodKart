@@ -10,6 +10,8 @@ from django.views.generic import ListView,DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, View
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import user_passes_test
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 class CustomerRegisterView(CreateView):
     model = User
@@ -42,7 +44,7 @@ def loginview(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, "You are now logged in as {username}.")
-                return redirect('/welcome')
+                return redirect('/home')
             else:
                 messages.error(request,"Invalid username or password.")
         else:
@@ -152,14 +154,14 @@ def ordersummaryview(request):
     for item in items:
         if item['restaurant_id'] not in restaurants:
             restaurants[item['restaurant_id']]={}
+            restaurants[item['restaurant_id']]['items']={}
             res=Restaurant.objects.get(pk=item['restaurant_id'])
-            restaurants[item['restaurant_id']]['pickuplat']=res.res_name
+            restaurants[item['restaurant_id']]['rest_name']=res.res_name
             restaurants[item['restaurant_id']]['pickuplat']=res.latitude
             restaurants[item['restaurant_id']]['pickuplong']=res.longitude
-        restaurants[item['restaurant_id']][item['food_name']]=item['price']
-    info['restaurants']=restaurants
-    print(info)
-
+        restaurants[item['restaurant_id']]['items'][item['food_name']]=item['price']
+    print( json.dumps(restaurants, cls=DjangoJSONEncoder))
+    return render(request=request, template_name="order.html", context={"info":json.dumps(info, cls=DjangoJSONEncoder), "rests":json.dumps(restaurants, cls=DjangoJSONEncoder)})
 
 
 
