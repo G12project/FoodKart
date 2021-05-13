@@ -43,10 +43,11 @@
       var content = '';
 
       snapshot.forEach(function (data) {
-        var Customername = data.val().cust_name;
+        var Rname = data.val().rest_name;
         var orderid = data.key;
         content += '<tr>';
-        content += '<td>' + Customername + '</td>';
+        content += '<td>' + Rname + '</td>';
+          k=Object.keys(data)
         var str = "Track Order";
         var url1 = "/orderstatus/" + orderid;
         var result = str.link(url1);

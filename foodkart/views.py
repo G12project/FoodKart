@@ -167,7 +167,7 @@ def ordersummaryview(request):
     cust=Customer.objects.get(user=request.user)
     info['cust_id']=request.user.pk
     info['cust_name']=cust.cus_name
-    items=Menu.objects.filter(cart__customer_id=request.user).values('food_name', 'price', 'restaurant_id')
+    items=Menu.objects.filter(cart__customer_id=request.user).values('food_name', 'price', 'restaurant_id', 'cart')
     print(items)
     restaurants={}
     for item in items:
@@ -178,10 +178,45 @@ def ordersummaryview(request):
             restaurants[item['restaurant_id']]['rest_name']=res.res_name
             restaurants[item['restaurant_id']]['pickuplat']=res.latitude
             restaurants[item['restaurant_id']]['pickuplong']=res.longitude
-        restaurants[item['restaurant_id']]['items'][item['food_name']]=item['price']
-    # print( json.dumps(alladdress, cls=DjangoJSONEncoder))
+            restaurants[item['restaurant_id']]['items'][item['food_name']]={}
+        restaurants[item['restaurant_id']]['items'][item['food_name']]['price']=item['price']
+        c=Cart.objects.get(pk=item['cart'])
+        restaurants[item['restaurant_id']]['items'][item['food_name']]['quantity']=c.quantity
+    print(restaurants)
     return render(request=request, template_name="order.html", context={"info":json.dumps(info, cls=DjangoJSONEncoder), "rests":json.dumps(restaurants, cls=DjangoJSONEncoder)})
 
+def orderview(request, q=None):
+    if not request.user.is_authenticated or not request.user.is_customer:
+        return redirect('/')
+    return render(request=request, template_name="orderstatus.html", context={"orderid":q})
+def orderlist(request):
+    if not request.user.is_authenticated or not request.user.is_restaurant:
+        return redirect('/')
+    return render(request=request, template_name="orderlist2.html")
+
+def restcheckorderview(request, q=None):
+    if not request.user.is_authenticated or not request.user.is_restaurant:
+        return redirect('/')
+    return render(request=request, template_name="handleOrder.html", context={"orderid":q})
+def trackordersview(request):
+    if not request.user.is_authenticated or not request.user.is_customer:
+        return redirect('/')
+    return render(request=request, template_name="orderlist.html")
+
+
+
+
+
+
+
+
+    # print( json.dumps(alladdress, cls=DjangoJSONEncoder))
+    return render(request=request, template_name="order.html", context={"info":json.dumps(info, cls=DjangoJSONEncoder), "rests":json.dumps(restaurants, cls=DjangoJSONEncoder)})
+def successorderview(request):
+    if not request.user.is_authenticated or not request.user.is_customer:
+        return redirect('/')
+    Cart.objects.filter(customer_id=request.user).delete()
+    return render(request=request, template_name="successorder.html")
 def orderview(request, q=None):
     if not request.user.is_authenticated or not request.user.is_customer:
         return redirect('/')

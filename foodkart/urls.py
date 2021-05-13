@@ -27,6 +27,7 @@ urlpatterns = [
 	path('orderlist', views.orderlist, name='orderlist'),
 	path('restordercheck/<str:q>', views.restcheckorderview, name='checkorder'),
 	path('trackorders', views.trackordersview, name='trackorders'),
+	path('successorder', views.successorderview, name='successorder'),
 
 
 

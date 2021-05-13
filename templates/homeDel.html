@@ -1,17 +1,28 @@
 <html>
 <head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<script src='https://unpkg.com/@turf/turf/turf.min.js'></script>
 	<script src='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js'></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
-<h1>Welcome {{user.id}}</h1>
-<table class="table table-striped" id="ex-table">
-	<tr id="tr">
-		<th>CustomerName</th>
-		<th>Foodname</th>
-		<th>Restaurant Address</th>
-	</tr>
+
+	<table class="table table-hover table-dark">
+  <thead>
+    <tr>
+     <th>Order_id</th>
+     <th>Restaurant Name</th>
+     <th>Customer Name</th>
+      <th>Address</th>
+      <th>Radius</th>
+      <th>Take Order</th>
+    </tr>
+  </thead>
+</table>
+	 <table class="table table-hover table-dark" id="ex-table">
+		 <tbody>
+			 </tbody>
+
 </table>
 <input hidden id='add'/>
 <!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -47,7 +58,7 @@
 		query=events.orderByChild('rest_id');
 		events.on('value',function(snapshot){
 	      if(snapshot.exists()){
-			var content = '';
+			$('#ex-table').find('tbody').empty();
 		  snapshot.forEach(function(data){
 			var restaurantname = data.val().rest_name;
 			var Customername = data.val().cust_name;
@@ -56,29 +67,25 @@
 			var pickuplong=data.val().pickuplong;
 			var status=data.val().curr_status;
 			var dist=getdistance(latitude, longitude, pickuplat, pickuplong);
-			if(dist<5 && status==3){
-			content += '<tr>';
-			content += '<td>' + orderid + '</td>';
-			content += '<td>' + restaurantname + '</td>';
-			content += '<td>' + Customername + '</td>';
+			if (dist < 5 && status == 3) {
 			const url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + pickuplong + "," + pickuplat + ".json?access_token=pk.eyJ1IjoieWFzaDQ1NTYiLCJhIjoiY2tvaG9hbXdnMTFpYzJub2MxOXJ5emxyNyJ9.EWWBTTl5gYAZ_HRXhoSEew";
-				$.getJSON(url, function (ans) {
-					var p=ans.features[0].place_name;
-					console.log(p);
-					document.getElementById('add').value=p;
-				});
-			var str= document.getElementById('add').value.toString()
-			console.log(str);
-			content+='</td>'+str+'</td>';
-			content += '<td>' + dist.toFixed([2]) + 'km</td>';
-			var str = "Go to Order";
+			$.getJSON(url, function (ans) {
+				var content = '';
+				content += '<tr>';
+				content += '<td>' + orderid + '</td>';
+				content += '<td>' + restaurantname + '</td>';
+				content += '<td>' + Customername + '</td>';
+				content+='<td>'+ ans.features[0].place_name+'</td>';
+				content += '<td>' + dist.toFixed([2]) + 'km</td>';
+				var str = "Go to Order";
 				var url1 = "/takeorder/"+orderid.toString();
-			var result = str.link(url1);
-			content += '<td>' + result + '</td>';
-			content += '</tr>';
-			}
+				var result = str.link(url1);
+				content += '<td>' + result + '</td>';
+				content += '</tr>';
+				$('#ex-table').append(content);
+			});
+			};
 		 });
-		 $('#ex-table').html(content);
 	}
 	});
 }

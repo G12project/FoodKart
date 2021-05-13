@@ -33,7 +33,6 @@
 	};
 	firebase.initializeApp(firebaseConfig);
 	var db = firebase.database();
-	console.log("{{orderid}}");
 	var events = db.ref('Orders/');
 	query=events.orderByKey();
 	query.on('value', function (snapshot) {
@@ -44,7 +43,7 @@
 				showmap(data.val().del_lat, data.val().del_long, data.val().del_id);
 				var os = data.val().curr_status;
 				console.log(os);
-				if(os=='Order_placed'){
+				if(os==0){
 					content+="order placed successfully";
 				}
 				else if (os == 1) {

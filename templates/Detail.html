@@ -1,4 +1,4 @@
-<body>
+<!-- <body>
 <table border="1">
     <thead>
         <tr>
@@ -16,7 +16,7 @@
     </table>
 <!-- the upper part is backend related and lower is template-->
     <head>
-        <style>
+        <style> -->
 
 
 .column{
@@ -27,7 +27,7 @@
     }
     .row{
         height: 100%;
-        width: 100%;
+        width: 150%;
 
     }
             .topnav {
@@ -81,20 +81,7 @@
 
 
            </style>
-           <script type="text/javascript">
-            var counter = 1;
 
-            function increment(){
-             if(counter>=0){
-              counter++;
-              document.getElementById("max").value=counter;}
-            }
-            function decrement(){
-              if(counter>=1){
-              counter--;
-              document.getElementById("max").value=counter;}
-            }
-            </script>
 
  </head>
 
@@ -103,11 +90,11 @@
 
 
 
-     <a href="#home">Home <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
+     <a href="/home">Home <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
       <path fill-rule="evenodd" d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
       <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
     </svg></a>
-                <a href="#offer">offer <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gift" viewBox="0 0 16 16">
+                <a href="/">offer <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gift" viewBox="0 0 16 16">
                     <path d="M3 2.5a2.5 2.5 0 0 1 5 0 2.5 2.5 0 0 1 5 0v.006c0 .07 0 .27-.038.494H15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 14.5V7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h2.038A2.968 2.968 0 0 1 3 2.506V2.5zm1.068.5H7v-.5a1.5 1.5 0 1 0-3 0c0 .085.002.274.045.43a.522.522 0 0 0 .023.07zM9 3h2.932a.56.56 0 0 0 .023-.07c.043-.156.045-.345.045-.43a1.5 1.5 0 0 0-3 0V3zM1 4v2h6V4H1zm8 0v2h6V4H9zm5 3H9v8h4.5a.5.5 0 0 0 .5-.5V7zm-7 8V7H2v7.5a.5.5 0 0 0 .5.5H7z"/>
                   </svg></a>
                 <a href="login.html">signin <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
@@ -121,21 +108,17 @@
                     <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
                   </svg></a>
               </div>
-
-
-
-
               <div class="row">
 
                 <div class="column" >
-                    <p style="font-family: fantasy;font-size:x-large;">Food item</p>
-                    <img src="images.png">
+                    <p style="font-family: fantasy;font-size:x-large;">{{object.food_name}}</p>
+                    <img src="{{object.food_image.url}}" width="500" height="400">
                 </div>
                 <div class="column" >
                     <p style="font-family:fantasy; font-size: larger;">Description</p>
-                    <p style="font-family: monospace; font-size: larger;">Pigeon by Stovekraft Handy and Compact Chopper Pro Standard with 3 Blades for effortlessly Chopping Vegetables and Fruits for Your Kitchen <br><br>price:400 INR</p>
+                    <p style="font-family: monospace; font-size: larger;">{{object.description}}<br><br>{{object.price}}</p>
 
-                    <p style="font-family: monospace; font-size: larger;">quantity:<input id="max" value="1" / style="width: 3%;">
+                    <p style="font-family: monospace; font-size: larger;">Quantity:<input id="max" value="1" / style="width: 7%; padding-top: 7px; font-size: medium;">
                       <button  onclick="increment()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                       </svg></button>
@@ -144,9 +127,11 @@
                       </svg></button></p>
 
 
-                    <button type="button" style="font-family: fantasy;"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                      </svg> add to cart</button>
+                    <button type="button" style="font-family: fantasy;"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart"
+                      viewBox="0 0 16 16">
+                      <path
+                        d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                    </svg><a style="color:black;" href="/addcart/{{object.id}}/1" id="xyz">Add to Cart</a></button>
                 </div>
                 </div>
                 <div class="column" >
@@ -156,13 +141,23 @@
 
 
     </body>
-    <script>
-        var x = 3;
-        document.getElementById("xyz").href = "/addcart/{{object.id}}/" + x;
-    </script>
-<<<<<<< Updated upstream
 </body>
-</body>
-=======
-</body>
->>>>>>> Stashed changes
+
+<script type="text/javascript">
+  var counter = 1;
+
+  function increment() {
+    if (counter >= 0) {
+      counter++;
+      document.getElementById("xyz").href = "/addcart/{{object.id}}/" + counter;
+       document.getElementById("max").value = counter;
+    }
+  }
+  function decrement() {
+    if (counter >= 1) {
+      counter--;
+       document.getElementById("xyz").href = "/addcart/{{object.id}}/" + counter;
+        document.getElementById("max").value = counter;
+    }
+  }
+</script>

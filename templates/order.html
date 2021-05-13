@@ -8,10 +8,7 @@
 	<input id="add" />
 	<input id="lat" hidden/>
 	<input id="long" hidden/>
-	<button onclick="writeOrder()"> order </button>
-	<div id="redirect" hidden>
-		ORDER PLACED!
-	</div>
+	<button onclick="writeOrder()"> Order </button>
 
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js"></script>
@@ -43,6 +40,8 @@
 		console.log(rests);
 		// Initialize Firebase
 		console.log(info["cust_name"]);
+		var i=0;
+		console.log(Object.keys(rests).length);
 		for(k in rests){
 				console.log(rests[k]['rest_name']);
 				var key=firebase.database().ref('Orders/').push().key;
@@ -51,30 +50,22 @@
 					rest_name: rests[k]['rest_name'],
 					pickuplat: parseFloat(rests[k]['pickuplat']),
 					pickuplong: parseFloat(rests[k]["pickuplong"]),
+					item_list: rests[k]["items"],
 					cust_id: info["cust_id"],
 					cust_name: info["cust_name"],
 					del_lat: parseFloat(document.getElementById('lat').value),
 					del_long: parseFloat(document.getElementById('long').value),
 					del_id: -1,
 					curr_status : 0
-				});
-				var showCurrentData = firebase.database().ref('Orders');
-				showCurrentData.on('value', (snapshot) => {
-				const data = snapshot.val();
-				console.log(data);
-				});
-				var str = "Track Order";
-				var url1 = "/orderstatus/" +key;
-				var result = str.link(url1);
-				$('#redirect').append(result);
+				}).then(()=> {
+					i++;
+					if(i==Object.keys(rests).length){
+						window.location.href="/successorder";
+					}
 
+				});
 		 }
-			showdiv();
 	}
-	function showdiv(){
-		$('#redirect').toggle();
-	}
-
 </script>
 <script>
 	function geoFindMe(){

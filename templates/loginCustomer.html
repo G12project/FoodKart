@@ -38,7 +38,8 @@
                             <form method="POST">
                                 {% csrf_token %}
                                 <div class="form-group">
-                                    {{ login_form.as_p }}
+                                {%load crispy_forms_tags %}
+                                {{ login_form | crispy }}
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm">Sign in</button>
                                <a href="/register">Sign Up</a>
