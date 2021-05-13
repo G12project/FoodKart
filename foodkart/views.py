@@ -234,6 +234,9 @@ def trackordersview(request):
     if not request.user.is_authenticated or not request.user.is_customer:
         return redirect('/')
     return render(request=request, template_name="orderlist.html")
+def logout_request(request):
+    logout(request)
+    return redirect('/')
 
 
 
