@@ -77,7 +77,7 @@ class AddFood(UserPassesTestMixin, CreateView, LoginRequiredMixin):
     def form_valid(self, form):
         form.instance.restaurant_id = self.request.user
         return super().form_valid(form)
-    success_url = reverse_lazy('/resthome')
+    success_url ='/resthome'
 
 class UpdateFood(UserPassesTestMixin, UpdateView, LoginRequiredMixin):
     def test_func(self):
@@ -85,13 +85,13 @@ class UpdateFood(UserPassesTestMixin, UpdateView, LoginRequiredMixin):
     model=Menu
     fields=['food_name','description','food_image','veg','price']
     template_name='updatefood.html'
-    success_url=reverse_lazy('menu_list')
+    success_url='/resthome'
 class DeleteFood( UserPassesTestMixin, DeleteView, LoginRequiredMixin):
     def test_func(self):
         return self.request.user.is_restaurant
     model=Menu
     template_name='deletefood.html'
-    success_url=reverse_lazy('menu_list')
+    success_url='/resthome'
 
 class Home( UserPassesTestMixin, ListView,LoginRequiredMixin):
     def test_func(self):
@@ -109,7 +109,10 @@ class DelHome( UserPassesTestMixin, LoginRequiredMixin, View):
         return self.request.user.is_delivery
     def get(self, request):
         return render(request, self.template_name)
-
+def takeorderview(request, q=None):
+    if not request.user.is_authenticated or not request.user.is_delivery:
+        return redirect('/')
+    return render(request=request, template_name="deliveryinprocess.html", context={"orderid": q})
 class SearchFood( UserPassesTestMixin,ListView,LoginRequiredMixin):
     def test_func(self):
         return self.request.user.is_customer
@@ -176,18 +179,26 @@ def ordersummaryview(request):
             restaurants[item['restaurant_id']]['pickuplat']=res.latitude
             restaurants[item['restaurant_id']]['pickuplong']=res.longitude
         restaurants[item['restaurant_id']]['items'][item['food_name']]=item['price']
-    address=addresses.objects.filter(customer_id=request.user).values('latitude', 'longitude')
-    alladdress={}
-    for add in address:
-        alladdress
-    print( json.dumps(alladdress, cls=DjangoJSONEncoder))
-    return render(request=request, template_name="order.html", context={"info":json.dumps(info, cls=DjangoJSONEncoder), "rests":json.dumps(restaurants, cls=DjangoJSONEncoder), "address": json.dumps(alladdress, cls=DjangoJSONEncoder)})
+    # print( json.dumps(alladdress, cls=DjangoJSONEncoder))
+    return render(request=request, template_name="order.html", context={"info":json.dumps(info, cls=DjangoJSONEncoder), "rests":json.dumps(restaurants, cls=DjangoJSONEncoder)})
 
+def orderview(request, q=None):
+    if not request.user.is_authenticated or not request.user.is_customer:
+        return redirect('/')
+    return render(request=request, template_name="orderstatus.html", context={"orderid":q})
+def orderlist(request):
+    if not request.user.is_authenticated or not request.user.is_restaurant:
+        return redirect('/')
+    return render(request=request, template_name="orderlist2.html")
 
-
-
-
-
+def restcheckorderview(request, q=None):
+    if not request.user.is_authenticated or not request.user.is_restaurant:
+        return redirect('/')
+    return render(request=request, template_name="handleOrder.html", context={"orderid":q})
+def trackordersview(request):
+    if not request.user.is_authenticated or not request.user.is_customer:
+        return redirect('/')
+    return render(request=request, template_name="orderlist.html")
 
 
 

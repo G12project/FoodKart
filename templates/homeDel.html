@@ -10,8 +10,10 @@
 	<tr id="tr">
 		<th>CustomerName</th>
 		<th>Foodname</th>
+		<th>Restaurant Address</th>
 	</tr>
 </table>
+<input hidden id='add'/>
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js"></script>
 
@@ -46,24 +48,38 @@
 		events.on('value',function(snapshot){
 	      if(snapshot.exists()){
 			var content = '';
-          snapshot.forEach(function(data){
+		  snapshot.forEach(function(data){
 			var restaurantname = data.val().rest_name;
 			var Customername = data.val().cust_name;
 			var orderid=data.key;
 			var pickuplat=data.val().pickuplat;
 			var pickuplong=data.val().pickuplong;
+			var status=data.val().curr_status;
 			var dist=getdistance(latitude, longitude, pickuplat, pickuplong);
-			if(dist<5){
+			if(dist<5 && status==3){
 			content += '<tr>';
 			content += '<td>' + orderid + '</td>';
 			content += '<td>' + restaurantname + '</td>';
 			content += '<td>' + Customername + '</td>';
-			content += '<td>' + dist + '</td>';
+			const url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + pickuplong + "," + pickuplat + ".json?access_token=pk.eyJ1IjoieWFzaDQ1NTYiLCJhIjoiY2tvaG9hbXdnMTFpYzJub2MxOXJ5emxyNyJ9.EWWBTTl5gYAZ_HRXhoSEew";
+				$.getJSON(url, function (ans) {
+					var p=ans.features[0].place_name;
+					console.log(p);
+					document.getElementById('add').value=p;
+				});
+			var str= document.getElementById('add').value.toString()
+			console.log(str);
+			content+='</td>'+str+'</td>';
+			content += '<td>' + dist.toFixed([2]) + 'km</td>';
+			var str = "Go to Order";
+				var url1 = "/takeorder/"+orderid.toString();
+			var result = str.link(url1);
+			content += '<td>' + result + '</td>';
 			content += '</tr>';
 			}
 		 });
 		 $('#ex-table').html(content);
-		}
+	}
 	});
 }
 

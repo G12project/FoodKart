@@ -95,14 +95,14 @@ body {
     <tr>
     <td>{{ food.food_name }}</td>
     <td>{{ food.description }}</td>
-    <td><a href="updatefood/{{food.id}}">edit</a></td>
-  <td><a href="deletefood/{{food.id}}">delete</a></td>
+    <td><a href="update/{{food.id}}">edit</a></td>
+  <td><a href="delete/{{food.id}}">delete</a></td>
   </tr>
     {% endfor %}
 </tbody>
 </table>
 
-<a href="addfood/">New</a>
+<a href="add/">New</a>
 <!-- the upper code is related to backend and lower code is template for these files-->
 <!-- <body>
       <div class="topnav">

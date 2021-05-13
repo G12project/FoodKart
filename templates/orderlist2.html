@@ -34,21 +34,24 @@ firebase.initializeApp(firebaseConfig);
 var db=firebase.database();
 var events=db.ref('Orders');
 console.log(events);
-var query=events.orderByChild('rest_id').equalTo("21");
+var query=events.orderByChild('rest_id').equalTo(parseInt("{{user.id}}"));
 
 query.on('value',function(snapshot){
-	      if(snapshot.exists()){  
+	      if(snapshot.exists()){
         var content = '';
-         
+
           snapshot.forEach(function(data){
               var Customername = data.val().cust_name;
-              var orderid=data.val().orderid;
+              var orderid=data.key;
               content += '<tr>';
               content += '<td>' + Customername + '</td>';
-		  content += '<td>' + orderid + '</td>';
-             
+              var str = "Order Details";
+            var url1 = "/restordercheck/"+orderid;
+            var result = str.link(url1);
+		  content += '<td>' +result + '</td>';
+
               content += '</tr>';
- 
+
          });
 
 $('#ex-table').html(content);

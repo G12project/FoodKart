@@ -1,12 +1,17 @@
 <html>
 <head>
 	<title>try</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
-	<button id="add" onclick="showadd()">Your Addresses</button>
-	<table id="address"></table>
 	<button id="locate">Find Me</button>
+	<input id="add" />
+	<input id="lat" hidden/>
+	<input id="long" hidden/>
 	<button onclick="writeOrder()"> order </button>
+	<div id="redirect" hidden>
+		ORDER PLACED!
+	</div>
 
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js"></script>
@@ -40,22 +45,36 @@
 		console.log(info["cust_name"]);
 		for(k in rests){
 				console.log(rests[k]['rest_name']);
-				firebase.database().ref('Orders/').push().set({
+				var key=firebase.database().ref('Orders/').push().key;
+				firebase.database().ref('Orders/'+key).set({
 					rest_id: parseInt(k),
 					rest_name: rests[k]['rest_name'],
 					pickuplat: parseFloat(rests[k]['pickuplat']),
 					pickuplong: parseFloat(rests[k]["pickuplong"]),
 					cust_id: info["cust_id"],
 					cust_name: info["cust_name"],
-					curr_status : 'Order_placed'
+					del_lat: parseFloat(document.getElementById('lat').value),
+					del_long: parseFloat(document.getElementById('long').value),
+					del_id: -1,
+					curr_status : 0
 				});
 				var showCurrentData = firebase.database().ref('Orders');
 				showCurrentData.on('value', (snapshot) => {
 				const data = snapshot.val();
 				console.log(data);
-			});
+				});
+				var str = "Track Order";
+				var url1 = "/orderstatus/" +key;
+				var result = str.link(url1);
+				$('#redirect').append(result);
+
 		 }
+			showdiv();
 	}
+	function showdiv(){
+		$('#redirect').toggle();
+	}
+
 </script>
 <script>
 	function geoFindMe(){
@@ -63,11 +82,13 @@
 			function success(position) {
 				lat= position.coords.latitude;
 				long= position.coords.longitude;
-				const url= "https://api.mapbox.com/geocoding/v5/mapbox.places/"+long+","+lat+".json?access_token=pk.eyJ1IjoieWFzaDQ1NTYiLCJhIjoiY2tvaG9hbXdnMTFpYzJub2MxOXJ5emxyNyJ9.EWWBTTl5gYAZ_HRXhoSEew";
-				$.getJSON(url,function(ans){
+				document.getElementById('lat').value=lat;
+				document.getElementById('long').value=long;
+				const url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + long + "," + lat + ".json?access_token=pk.eyJ1IjoieWFzaDQ1NTYiLCJhIjoiY2tvaG9hbXdnMTFpYzJub2MxOXJ5emxyNyJ9.EWWBTTl5gYAZ_HRXhoSEew";
+				$.getJSON(url, function (ans) {
 					console.log(ans.features[0].place_name);
+					document.getElementById('add').value=ans.features[0].place_name;
 				});
-
 			}
 
 			function error() {
@@ -84,22 +105,6 @@
 		}
 		document.querySelector('#locate').addEventListener('click', geoFindMe);
 </script>
-<script>
-	function showadd(){
-	var add= JSON.parse("{{ address |escapejs }}");
-	var content="";
-	for(k in add){
-		var p="";
-		const url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + add[k]['long'] + "," + add[k]['lat'] + ".json?access_token=pk.eyJ1IjoieWFzaDQ1NTYiLCJhIjoiY2tvaG9hbXdnMTFpYzJub2MxOXJ5emxyNyJ9.EWWBTTl5gYAZ_HRXhoSEew";
-		$.getJSON(url, function (ans) {
-			p=ans.features[0].place_name;
-		});
-		content += '<tr>';
-			content += '<td>' +p+ '</td>';
-			content += '</tr>';
-	}
-	$('#ex-table').html(content);
-}
-</script>
+
 </body>
 </html>

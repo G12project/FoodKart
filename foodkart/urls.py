@@ -22,6 +22,11 @@ urlpatterns = [
 	path('ordersummary', views.ordersummaryview, name='ordersummary'),
 	path('delhome', views.DelHome.as_view(), name='delhome'),
 	path('permittrack', views.permittrackview, name='permittrack'),
+	path('takeorder/<str:q>', views.takeorderview, name='takeorder'),
+	path('orderstatus/<str:q>', views.orderview, name='orderstatus'),
+	path('orderlist', views.orderlist, name='orderlist'),
+	path('restordercheck/<str:q>', views.restcheckorderview, name='checkorder'),
+	path('trackorders', views.trackordersview, name='trackorders'),
 
 
 
