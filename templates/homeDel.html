@@ -24,6 +24,7 @@
 			 </tbody>
 
 </table>
+<a href="/logout">Logout</a>
 <input hidden id='add'/>
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js"></script>
@@ -35,11 +36,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js"></script>
 
 <script>
-	function success(position){
-		const latitude = position.coords.latitude;
-		const longitude = position.coords.longitude;
-		console.log(latitude+" "+longitude);
-		var firebaseConfig = {
+	var firebaseConfig = {
 			apiKey: "AIzaSyDfGQmsSdjAM77R7g4rkCa_d7FXsaPcl_I",
 			authDomain: "test2-374dc.firebaseapp.com",
 			databaseURL: "https://test2-374dc-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -53,9 +50,13 @@
 		} else {
 			firebase.app(); // if already initialized, use that one
 		}
-		var db = firebase.database();
+	function success(position){
+		const latitude = position.coords.latitude;
+		const longitude = position.coords.longitude;
+		console.log(latitude+" "+longitude);
+		var db=firebase.database();
 		var events = db.ref('Orders');
-		query=events.orderByChild('rest_id');
+		// query=events.orderByChild('rest_id');
 		events.on('value',function(snapshot){
 	      if(snapshot.exists()){
 			$('#ex-table').find('tbody').empty();
@@ -67,7 +68,17 @@
 			var pickuplong=data.val().pickuplong;
 			var status=data.val().curr_status;
 			var dist=getdistance(latitude, longitude, pickuplat, pickuplong);
-			if (dist < 5 && status == 3) {
+			if ((dist < 5 && status == 3) || (data.val().del_id==parseInt("{{user.id}}"))) {
+			if((data.val().del_id == parseInt("{{user.id}}"))){
+				var content='';
+				var str = "Ongoing Delivery";
+				var url1 = "/takeorder/" + orderid.toString();
+				var result = str.link(url1);
+				content+='<tr><td>'+result+'</td></tr>';
+				$('#ex-table').html(content);
+
+			}
+			else{
 			const url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + pickuplong + "," + pickuplat + ".json?access_token=pk.eyJ1IjoieWFzaDQ1NTYiLCJhIjoiY2tvaG9hbXdnMTFpYzJub2MxOXJ5emxyNyJ9.EWWBTTl5gYAZ_HRXhoSEew";
 			$.getJSON(url, function (ans) {
 				var content = '';
@@ -84,7 +95,8 @@
 				content += '</tr>';
 				$('#ex-table').append(content);
 			});
-			};
+		}
+	}
 		 });
 	}
 	});

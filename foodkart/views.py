@@ -120,9 +120,9 @@ class SearchFood( UserPassesTestMixin,ListView,LoginRequiredMixin):
     template_name='Search.html'
     def get_queryset(self):
         food = self.request.GET.get('search','')
-        if not Menu.objects.filter(food_name=food).exists():
+        if not Menu.objects.filter(food_name__icontains=food).exists():
             return None
-        object_list=Menu.objects.filter(food_name=food)
+        object_list=Menu.objects.filter(food_name__icontains=food)
         return object_list
 
 class DetailFood( UserPassesTestMixin, DetailView,LoginRequiredMixin):
@@ -145,21 +145,21 @@ def additemview(request, pk=None, q=None):
     return redirect('/mycart')
 
 class MyCart(UserPassesTestMixin, ListView, LoginRequiredMixin):
-	def test_func(self):
-		return self.request.user.is_customer
-	model=Menu
-	template_name="Cart.html"
-	def get_queryset(self):
-		id=Cart.objects.filter(customer_id=self.request.user).values('item')
-		id_list=[]
-		for item in id:
-			id_list.append(item)
-		print(id_list)
-		if not id:
-			return None
-		object_list=Menu.objects.filter(pk__in=id)
-		print(object_list)
-		return object_list
+    def test_func(self):
+        return self.request.user.is_customer
+    template_name="Cart.html"
+    model=Menu
+    def get_queryset(self):
+        items=Menu.objects.filter(cart__customer_id=self.request.user).values('food_name', 'price', 'cart')
+        print(items)
+        object_list=[]
+        for obj in items:
+            q=Cart.objects.get(pk=obj['cart'])
+            object_list.append({'food_name':obj['food_name'], 'price': obj['price'], 'quantity':q.quantity})
+        print(object_list)
+        return object_list
+
+
 def ordersummaryview(request):
     if not request.user.is_authenticated or not request.user.is_customer:
         return redirect('/')
@@ -202,16 +202,6 @@ def trackordersview(request):
     if not request.user.is_authenticated or not request.user.is_customer:
         return redirect('/')
     return render(request=request, template_name="orderlist.html")
-
-
-
-
-
-
-
-
-    # print( json.dumps(alladdress, cls=DjangoJSONEncoder))
-    return render(request=request, template_name="order.html", context={"info":json.dumps(info, cls=DjangoJSONEncoder), "rests":json.dumps(restaurants, cls=DjangoJSONEncoder)})
 def successorderview(request):
     if not request.user.is_authenticated or not request.user.is_customer:
         return redirect('/')
@@ -234,6 +224,9 @@ def trackordersview(request):
     if not request.user.is_authenticated or not request.user.is_customer:
         return redirect('/')
     return render(request=request, template_name="orderlist.html")
+def logout_request(request):
+    logout(request)
+    return redirect('/')
 
 
 

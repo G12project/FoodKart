@@ -5,8 +5,11 @@
 </head>
 
 <body>
-	<button id='locate'> track me</button>
-	<a href="/delhome">Home</a>
+	<h2>As part of delivery services, your location will be monitored at all times you are logged in to the system.</h2>
+	<h3> Allow Us to track your location</h3>
+
+	<button id='locate' style="background: blue; color:white; width: 80px; height: 50px; border: dark;"> Track me</button>
+
 	<!-- The core Firebase JS SDK is always required and must be listed first -->
 	<script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js"></script>
 
@@ -45,6 +48,14 @@
 						currlat: latitude,
 						currlong: longitude,
 						is_busy: false
+					}).then((error) => {
+						if (error){
+							console.log("Error");
+						}
+						else{
+							window.location.href = "/delhome";
+						}
+
 					});
 					var showCurrentData = firebase.database().ref('DeliveryExec');
 					showCurrentData.on('value', (snapshot) => {

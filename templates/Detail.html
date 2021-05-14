@@ -1,120 +1,133 @@
-<!-- <body>
-<table border="1">
-    <thead>
-        <tr>
-        <th>food</th>
-        <th>description</th>
-        </tr>
-    </thead>
-    <tbody>
-        <td>{{ object.food_name }}</td>
-        <tr>
-        <td>{{ object.description }}</td>>
-        <td><a id="xyz">Add to Cart</a></td>
-        </tr>
-    </tbody>
-    </table>
-<!-- the upper part is backend related and lower is template-->
-    <head>
-        <style> -->
+<!doctype html>
+<html>
 
-
-.column{
-        float: left;
-        width: 30%;
-
-  padding: 70px 30px;
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navigation Bar</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
     }
-    .row{
-        height: 100%;
-        width: 150%;
 
+    .logo {
+      width: 20%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-            .topnav {
-  background-color: #333;
-  overflow: hidden;
-}
 
-/* Style the links inside the navigation bar */
-.topnav a {
-  float: left;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-}
+    .logo img {
+      width: 50%;
+      border: 3px solid white;
+      border-radius: 50px;
+    }
 
-/* Change the color of links on hover */
-.topnav a:hover {
-  background-color: #ddd;
-  color: black;
-}
+    .navbar {
+      background-color: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      cursor: pointer;
+      top: 0%;
+    }
 
+    .nav-list {
+      display: flex;
+      width: 50%;
+      background-color: black;
+      align-items: center;
+    }
 
+    .nav-list li {
+      list-style: none;
+      padding: 26px 30px;
+    }
 
-#search-text-input{
-    border-top:thin solid  #e5e5e5;
-    border-right:thin solid #e5e5e5;
-    border-bottom:0;
-    border-left:thin solid  #e5e5e5;
-    box-shadow:0px 1px 1px 1px #e5e5e5;
-    float:left;
-    height:17px;
-    margin:.8em 0 0 .5em;
-    outline:0;
-    padding:.4em 0 .4em .6em;
-    width:183px;
-}
+    .nav-list li a {
+      text-decoration: none;
+      color: white;
+    }
 
-#button-holder{
-    background-color:#f1f1f1;
-    border-top:thin solid #e5e5e5;
-    box-shadow:1px 1px 1px 1px #e5e5e5;
-    cursor:pointer;
-    float:left;
-    height:27px;
-    margin:11px 0 0 0;
-    text-align:center;
-    width:50px;
-}
+    .nav-list li a:hover {
+      color: red;
+    }
 
+    .right-nav {
+      width: 50%;
 
-           </style>
+      text-align: right;
+      padding-right: 20px;
+    }
 
-
- </head>
+    #Search {
+      padding: 5px;
+      font-size: 18px;
+      border: 2px solid steelblue;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
 
 <body>
- <div class="topnav">
+  <nav class="navbar background">
+    <ul class="nav-list">
 
-
-
-     <a href="/home">Home <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
-      <path fill-rule="evenodd" d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
-      <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
-    </svg></a>
-                <a href="/">offer <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gift" viewBox="0 0 16 16">
-                    <path d="M3 2.5a2.5 2.5 0 0 1 5 0 2.5 2.5 0 0 1 5 0v.006c0 .07 0 .27-.038.494H15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 14.5V7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h2.038A2.968 2.968 0 0 1 3 2.506V2.5zm1.068.5H7v-.5a1.5 1.5 0 1 0-3 0c0 .085.002.274.045.43a.522.522 0 0 0 .023.07zM9 3h2.932a.56.56 0 0 0 .023-.07c.043-.156.045-.345.045-.43a1.5 1.5 0 0 0-3 0V3zM1 4v2h6V4H1zm8 0v2h6V4H9zm5 3H9v8h4.5a.5.5 0 0 0 .5-.5V7zm-7 8V7H2v7.5a.5.5 0 0 0 .5.5H7z"/>
-                  </svg></a>
-                <a href="login.html">signin <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                  </svg></a>
-                <a href="#cart">cart <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                  </svg></a>
-                <a  href="#help">Help <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                    <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
-                  </svg></a>
-              </div>
+      <li><a href="/home">Home <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-house-fill" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z" />
+            <path fill-rule="evenodd"
+              d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z" />
+          </svg> </a></li>
+      <li><a href="/trackorders">Track <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+            fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
+          </svg></a></li>
+      <li><a href="/mycart">Cart <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-cart" viewBox="0 0 16 16">
+            <path
+              d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+          </svg> </a></li>
+      <!-- <li><a href="/allorders">Past Orders <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                fill="currentColor" class="bi bi-file-earmark-text" viewBox="0 0 16 16">
+                <path
+                  d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z" />
+                <path
+                  d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
+              </svg></a></li> -->
+      <li><a class="nav-link" href="/logout">Logout<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+            fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+            <path
+              d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+          </svg></a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li>{% if user.is_authenticated %}
+        <a style="color:white" class="navbar-brand" href="/home">{{user.username}}<svg
+            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-person"
+            viewBox="0 0 16 16">
+            <path
+              d="M12 1a1 1 0 0 1 1 1v10.755S12 11 8 11s-5 1.755-5 1.755V2a1 1 0 0 1 1-1h8zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z" />
+            <path d="M8 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+          </svg> </a>
+        {%endif%}
+      </li>
+    </ul>
+  </nav>
               <div class="row">
 
-                <div class="column" >
+                <div class="column"  style="padding:10px 50px 50px 50px;">
                     <p style="font-family: fantasy;font-size:x-large;">{{object.food_name}}</p>
                     <img src="{{object.food_image.url}}" width="500" height="400">
                 </div>
-                <div class="column" >
+                <div class="column" style="padding:60px 50px 50px 50px;">
                     <p style="font-family:fantasy; font-size: larger;">Description</p>
                     <p style="font-family: monospace; font-size: larger;">{{object.description}}<br><br>{{object.price}}</p>
 
@@ -134,7 +147,6 @@
                     </svg><a style="color:black;" href="/addcart/{{object.id}}/1" id="xyz">Add to Cart</a></button>
                 </div>
                 </div>
-                <div class="column" >
 
             </div>
 
