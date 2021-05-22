@@ -176,14 +176,14 @@ def ordersummaryview(request):
             restaurants[item['restaurant_id']]['items']={}
             res=Restaurant.objects.get(pk=item['restaurant_id'])
             restaurants[item['restaurant_id']]['rest_name']=res.res_name
-            restaurants[item['restaurant_id']]['pickuplat']=res.latitude
-            restaurants[item['restaurant_id']]['pickuplong']=res.longitude
-            restaurants[item['restaurant_id']]['items'][item['food_name']]={}
-        restaurants[item['restaurant_id']]['items'][item['food_name']]['price']=item['price']
+            restaurants[item['restaurant_id']]['pickuplat']=str(res.latitude)
+            restaurants[item['restaurant_id']]['pickuplong']=str(res.longitude)
         c=Cart.objects.get(pk=item['cart'])
+        restaurants[item['restaurant_id']]['items'][item['food_name']]={}
+        restaurants[item['restaurant_id']]['items'][item['food_name']]['price']=item['price']
         restaurants[item['restaurant_id']]['items'][item['food_name']]['quantity']=c.quantity
     print(restaurants)
-    return render(request=request, template_name="order.html", context={"info":json.dumps(info, cls=DjangoJSONEncoder), "rests":json.dumps(restaurants, cls=DjangoJSONEncoder)})
+    return render(request=request, template_name="order.html", context={"info": info, "rests": restaurants})
 
 def orderview(request, q=None):
     if not request.user.is_authenticated or not request.user.is_customer:
