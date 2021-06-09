@@ -171,6 +171,7 @@ def ordersummaryview(request):
     print(items)
     restaurants={}
     for item in items:
+        info['rest']=True
         if item['restaurant_id'] not in restaurants:
             restaurants[item['restaurant_id']]={}
             restaurants[item['restaurant_id']]['items']={}
@@ -180,7 +181,7 @@ def ordersummaryview(request):
             restaurants[item['restaurant_id']]['pickuplong']=str(res.longitude)
         c=Cart.objects.get(pk=item['cart'])
         restaurants[item['restaurant_id']]['items'][item['food_name']]={}
-        restaurants[item['restaurant_id']]['items'][item['food_name']]['price']=item['price']
+        restaurants[item['restaurant_id']]['items'][item['food_name']]['price']=item['price']*c.quantity
         restaurants[item['restaurant_id']]['items'][item['food_name']]['quantity']=c.quantity
     print(restaurants)
     return render(request=request, template_name="order.html", context={"info": info, "rests": restaurants})
