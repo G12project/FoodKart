@@ -208,23 +208,6 @@ def successorderview(request):
         return redirect('/')
     Cart.objects.filter(customer_id=request.user).delete()
     return render(request=request, template_name="successorder.html")
-def orderview(request, q=None):
-    if not request.user.is_authenticated or not request.user.is_customer:
-        return redirect('/')
-    return render(request=request, template_name="orderstatus.html", context={"orderid":q})
-def orderlist(request):
-    if not request.user.is_authenticated or not request.user.is_restaurant:
-        return redirect('/')
-    return render(request=request, template_name="orderlist2.html")
-
-def restcheckorderview(request, q=None):
-    if not request.user.is_authenticated or not request.user.is_restaurant:
-        return redirect('/')
-    return render(request=request, template_name="handleOrder.html", context={"orderid":q})
-def trackordersview(request):
-    if not request.user.is_authenticated or not request.user.is_customer:
-        return redirect('/')
-    return render(request=request, template_name="orderlist.html")
 def logout_request(request):
     logout(request)
     return redirect('/')

@@ -152,9 +152,23 @@
 
 
 
-    </body>
-</body>
+      <script>
+        var counter = 1;
 
-<script src="{% static "js/Detail.js" %}"></script>
-
-</script>
+        function increment() {
+          if (counter >= 0) {
+            counter++;
+            document.getElementById("xyz").href = "/addcart/{{object.id}}/" + counter;
+            document.getElementById("max").value = counter;
+          }
+        }
+        function decrement() {
+          if (counter >= 1) {
+            counter--;
+            document.getElementById("xyz").href = "/addcart/{{object.id}}/" + counter;
+            document.getElementById("max").value = counter;
+          }
+        }
+    </script>
+  </body>
+</html>

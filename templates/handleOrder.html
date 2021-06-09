@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 
@@ -66,7 +67,7 @@
 		}
 
 	</style>
-	<title>order list</title>
+	<title>Status</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -76,6 +77,7 @@
 </head>
 
 <body>
+	{{ orderid|json_script:"orderid" }}
 	<nav class="navbar background">
 		<ul class="nav-list">
 
@@ -142,62 +144,8 @@
 	<button id='prepare' onclick="prepareOrder()" class="btn btn-warning"> Preparation Start</button>
 	<button id='deliver' onclick="requestdel()" class="btn btn-info">Ask for Delivery</button>
 </body>
-<script>
-	var firebaseConfig = {
-		apiKey: "AIzaSyDfGQmsSdjAM77R7g4rkCa_d7FXsaPcl_I",
-		authDomain: "test2-374dc.firebaseapp.com",
-		databaseURL: "https://test2-374dc-default-rtdb.asia-southeast1.firebasedatabase.app",
-		projectId: "test2-374dc",
-		storageBucket: "test2-374dc.appspot.com",
-		messagingSenderId: "900145299510",
-		appId: "1:900145299510:web:baed02e2b01bd767225897"
-	};
-	firebase.initializeApp(firebaseConfig);
-	var db = firebase.database();
-	var events = db.ref('Orders/' + "{{orderid}}");
-	var query=db.ref('Orders/');
-	query.child("{{orderid}}").get().then((snapshot) =>{
-		if (snapshot.exists()) {
-					console.log(snapshot.val())
-;					document.getElementById('cust_name').innerHTML=snapshot.val().cust_name;
-					var lat=snapshot.val().del_lat;
-					var long=snapshot.val().del_long;
-					const url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + long + "," + lat + ".json?access_token=pk.eyJ1IjoieWFzaDQ1NTYiLCJhIjoiY2tvaG9hbXdnMTFpYzJub2MxOXJ5emxyNyJ9.EWWBTTl5gYAZ_HRXhoSEew";
-					$.getJSON(url, function (ans) {
-						$('#address').html(ans.features[0].place_name);
-					});
-					var content='';
-					for (k in snapshot.val().item_list){
-						content+='<tr>';
-						content+='<td>'+k+'</td>';
-						content += '<td>' + snapshot.val().item_list[k]['quantity'] + '</td>';
-						var x = snapshot.val().item_list[k]['quantity'] * snapshot.val().item_list[k]['price']
-						content += '<td>' + x + '</td>';
-					}
-					var arr=[];
-					arr[0]='Waiting'; arr[1]='Confirmed'; arr[2]='Preparing'; arr[3]='Waiting for Delivery'; arr[4]='Out for Delivery'; arr[5]='Delivered';
-					document.getElementById('curr_status').innerHTML=arr[snapshot.val().curr_status];
-					$('#ex-table').html(content);
-	}
-});
-	function OkOrder(){
-		events.update({
-			curr_status: 1
-		});
-		window.location.href="/restordercheck/{{orderid}}";
-	}
-	function prepareOrder(){
-		events.update({
-			curr_status: 2
-		});
-		window.location.href="/restordercheck/{{orderid}}";
-	}
-	function requestdel() {
-		events.update({
-			curr_status: 3
-		});
-		window.location.href="/restordercheck/{{orderid}}";
-	}
+<script src="{% static "js/handleOrder.js" %}">
+
 </script>
 
 </html>
