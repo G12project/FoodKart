@@ -1,79 +1,17 @@
+{% load static %}
 <!doctype html>
 <html>
-
 <head>
+    <link rel=”stylesheet” href="{% static "css/test.css" %}" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Navigation Bar</title>
-    <link rel="stylesheet" href="css/style.css">
     <style>
-        * {
-            padding: 0;
-            margin: 0;
-        }
 
-        .logo {
-            width: 20%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .logo img {
-            width: 50%;
-            border: 3px solid white;
-            border-radius: 50px;
-        }
-
-        .navbar {
-            background-color: black;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: sticky;
-            cursor: pointer;
-            top: 0%;
-        }
-
-        .nav-list {
-            display: flex;
-            width: 50%;
-            background-color: black;
-            align-items: center;
-        }
-
-        .nav-list li {
-            list-style: none;
-            padding: 26px 30px;
-        }
-
-        .nav-list li a {
-            text-decoration: none;
-            color: white;
-        }
-
-        .nav-list li a:hover {
-            color: red;
-        }
-
-        .right-nav {
-            width: 50%;
-
-            text-align: right;
-            padding-right: 20px;
-        }
-
-        #Search {
-            padding: 5px;
-            font-size: 18px;
-            border: 2px solid steelblue;
-            border-radius: 5px;
-            cursor: pointer;
-        }
     </style>
-</head>
 
 <body>
     <nav class="navbar background">
@@ -107,9 +45,6 @@
                         <path
                             d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
                     </svg></a></li>
-            <li><a class="nav-link" href="/logout"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
-  <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
-</svg>Logout</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li>{% if user.is_authenticated %}
@@ -147,7 +82,7 @@
     {% endfor %}
 </div>
 
-
+<div id="xyz">pqr</div>
 </body>
 
 </html>
