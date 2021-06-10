@@ -29,7 +29,7 @@ function writeOrder() {
 		}).then(() => {
 			i++;
 			if (i == Object.keys(rests).length) {
-				window.location.href = "/successorder";
+				window.location.href = "/successorder/"+key;
 			}
 
 		});

@@ -27,8 +27,9 @@ urlpatterns = [
 	path('orderlist', views.orderlist, name='orderlist'),
 	path('restordercheck/<str:q>', views.restcheckorderview, name='checkorder'),
 	path('trackorders', views.trackordersview, name='trackorders'),
-	path('successorder', views.successorderview, name='successorder'),
+	path('successorder/<str:q>', views.successorderview, name='successorder'),
 	path("logout/", views.logout_request, name= "logout"),
+	path('finishorder/<str:q>', views.finishorderview, name='finishorder'),
 
 
 

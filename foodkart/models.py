@@ -60,12 +60,12 @@ class Menu(models.Model):
         return reverse('updatefood', kwargs={'pk': self.pk})
 
 class Orders(models.Model):
+    order_id=models.CharField(max_length=300,default="XXX")
     restaurant_id=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name="user1")
     customer_id=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name="user2")
-    exec_id=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name="user3")
+    exec_id=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name="user3", null=True)
     items=JSONField()
-    total_price=models.IntegerField()
-
+    total_price=models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
 class Cart(models.Model):
     customer_id=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     item=models.ForeignKey(Menu, on_delete=models.CASCADE)

@@ -1,17 +1,3 @@
-var firebaseConfig = {
-	apiKey: "AIzaSyDfGQmsSdjAM77R7g4rkCa_d7FXsaPcl_I",
-	authDomain: "test2-374dc.firebaseapp.com",
-	databaseURL: "https://test2-374dc-default-rtdb.asia-southeast1.firebasedatabase.app",
-	projectId: "test2-374dc",
-	storageBucket: "test2-374dc.appspot.com",
-	messagingSenderId: "900145299510",
-	appId: "1:900145299510:web:baed02e2b01bd767225897"
-};
-if (!firebase.apps.length) {
-	firebase.initializeApp(firebaseConfig);
-} else {
-	firebase.app(); // if already initialized, use that one
-}
 function getdistance(lat1, lng1, lat2, lng2) {
 	mapboxgl.accessToken = 'pk.eyJ1IjoibWpkYW5pZWxzb24iLCJhIjoiY2tkNm4wMTdoMml2bDJzbXlvZGp4YW0xcyJ9.gVoNxvWvLwK2Ev6ukzArsQ';
 	var to = [lng1, lat1] //lng, lat

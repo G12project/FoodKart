@@ -1,22 +1,10 @@
 var user_id = JSON.parse(document.getElementById('user_id').textContent);
 var orderid = JSON.parse(document.getElementById('orderid').textContent);
-url = "/takeorder/" + orderid;
+var url = "/takeorder/" + orderid;
+var url1="/finishorder/" +orderid;
 console.log(orderid+" "+ user_id)
-var firebaseConfig = {
-    apiKey: "AIzaSyDfGQmsSdjAM77R7g4rkCa_d7FXsaPcl_I",
-    authDomain: "test2-374dc.firebaseapp.com",
-    databaseURL: "https://test2-374dc-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "test2-374dc",
-    storageBucket: "test2-374dc.appspot.com",
-    messagingSenderId: "900145299510",
-    appId: "1:900145299510:web:baed02e2b01bd767225897"
-};
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-} else {
-    firebase.app(); // if already initialized, use that one
-}
 var ref = firebase.database().ref('Orders/' + orderid);
+var ref1 = firebase.database().ref('DeliveryExec/' + user_id);
 ref.update({
     del_id: parseInt(user_id)
 });
@@ -45,29 +33,14 @@ function success(position) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
     console.log(latitude + " " + longitude);
-    var firebaseConfig = {
-        apiKey: "AIzaSyDfGQmsSdjAM77R7g4rkCa_d7FXsaPcl_I",
-        authDomain: "test2-374dc.firebaseapp.com",
-        databaseURL: "https://test2-374dc-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "test2-374dc",
-        storageBucket: "test2-374dc.appspot.com",
-        messagingSenderId: "900145299510",
-        appId: "1:900145299510:web:baed02e2b01bd767225897"
-    };
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    } else {
-        firebase.app(); // if already initialized, use that one
-    }
     console.log(user_id)
-    var ref = firebase.database().ref('DeliveryExec/' + user_id);
-    ref.update({
+    ref1.update({
         currlat: latitude
     });
-    ref.update({
+    ref1.update({
         currlong: longitude
     });
-    ref.update({
+    ref1.update({
         is_busy: true
     });
     mapboxgl.accessToken = 'pk.eyJ1IjoieWFzaDQ1NTYiLCJhIjoiY2tvaG9hbXdnMTFpYzJub2MxOXJ5emxyNyJ9.EWWBTTl5gYAZ_HRXhoSEew';
@@ -119,5 +92,9 @@ function Delivered(){
     ref.update({
         curr_status: 5
     });
-    window.location.href = url;
+    ref.remove();
+    ref1.update({
+        is_busy: false
+    });
+    window.location.href = url1;
 }
