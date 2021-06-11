@@ -147,28 +147,8 @@
                     </svg><a style="color:black;" href="/addcart/{{object.id}}/1" id="xyz">Add to Cart</a></button>
                 </div>
                 </div>
-
             </div>
-
-
-
-      <script>
-        var counter = 1;
-
-        function increment() {
-          if (counter >= 0) {
-            counter++;
-            document.getElementById("xyz").href = "/addcart/{{object.id}}/" + counter;
-            document.getElementById("max").value = counter;
-          }
-        }
-        function decrement() {
-          if (counter >= 1) {
-            counter--;
-            document.getElementById("xyz").href = "/addcart/{{object.id}}/" + counter;
-            document.getElementById("max").value = counter;
-          }
-        }
+      <script src="{% static "js/Detail.js" %}">
     </script>
   </body>
 </html>

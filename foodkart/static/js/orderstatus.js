@@ -27,7 +27,7 @@ query.on('value', function (snapshot) {
 				}
 				else if (os == 5) {
 					content += "Delivered";
-					window.location.href="/completed/"+toString(orderid)+'/'+data.val().del_id;
+					ordercompleted();
 				}
 			}
 

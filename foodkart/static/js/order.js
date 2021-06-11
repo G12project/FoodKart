@@ -7,13 +7,21 @@ function writeOrder() {
 	var rests = JSON.parse(document.getElementById('rests').textContent);
 	console.log(info);
 	console.log(rests);
+	const csrftoken1 = document.querySelector('[name=csrfmiddlewaretoken]').value;
+	console.log(JSON.stringify(csrftoken1));
 	// Initialize Firebase
 	console.log(info["cust_name"]);
 	var i = 0;
 	console.log(Object.keys(rests).length);
+	var jsonx={};
 	for (k in rests) {
 		console.log(rests[k]['rest_name']);
 		var key = firebase.database().ref('Orders/').push().key;
+		jsonx[key]={
+			'rest_id': parseInt(k),
+			'cust_id': parseInt(info["cust_id"]),
+			'items': rests[k]['items']
+		};
 		firebase.database().ref('Orders/' + key).set({
 			rest_id: parseInt(k),
 			rest_name: rests[k]['rest_name'],
@@ -29,7 +37,8 @@ function writeOrder() {
 		}).then(() => {
 			i++;
 			if (i == Object.keys(rests).length) {
-				window.location.href = "/successorder/"+key;
+				console.log(JSON.stringify(jsonx));
+				successfulorder(jsonx);
 			}
 
 		});
@@ -47,6 +56,7 @@ function geoFindMe() {
 			console.log(ans.features[0].place_name);
 			document.getElementById('add').value = ans.features[0].place_name;
 		});
+		document.getElementById("order").disabled = false;
 	}
 
 	function error() {

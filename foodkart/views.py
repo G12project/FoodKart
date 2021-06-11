@@ -12,6 +12,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import user_passes_test
 import json
 from django.core.serializers.json import DjangoJSONEncoder
+from django.http import JsonResponse
 
 class CustomerRegisterView(CreateView):
     model = User
@@ -97,11 +98,28 @@ class Home( UserPassesTestMixin, ListView,LoginRequiredMixin):
     def test_func(self):
         return self.request.user.is_customer
     model=Menu
+    context_object_name = 'menu_all'
+    queryset = Menu.objects.all()
     template_name='home.html'
     def get_context_data(self, **kwargs):
         con = super(Home, self).get_context_data(**kwargs)
         con['search']=SearchForm()
+        con['search_res']=None
+        con['msg']=''
+        food = self.request.GET.get('search','')
+        if food:
+            if Menu.objects.filter(food_name__icontains=food).exists():
+                con['search_res']=Menu.objects.filter(food_name__icontains=food)
+                con['msg']="Here's what we found for you: "
+            else:
+                con['msg']="Sorry! We could not find your dish :("
         return con
+    #  def get_queryset(self):
+    #     food = self.request.GET.get('search','')
+    #     if not Menu.objects.filter(food_name__icontains=food).exists():
+    #         return None
+    #     object_list=Menu.objects.filter(food_name__icontains=food)
+    #     return object_list
 
 class DelHome( UserPassesTestMixin, LoginRequiredMixin, View):
     template_name='homeDel.html'
@@ -113,17 +131,6 @@ def takeorderview(request, q=None):
     if not request.user.is_authenticated or not request.user.is_delivery:
         return redirect('/')
     return render(request=request, template_name="deliveryinprocess.html", context={"orderid": q})
-class SearchFood( UserPassesTestMixin,ListView,LoginRequiredMixin):
-    def test_func(self):
-        return self.request.user.is_customer
-    model=Menu
-    template_name='Search.html'
-    def get_queryset(self):
-        food = self.request.GET.get('search','')
-        if not Menu.objects.filter(food_name__icontains=food).exists():
-            return None
-        object_list=Menu.objects.filter(food_name__icontains=food)
-        return object_list
 
 class DetailFood( UserPassesTestMixin, DetailView,LoginRequiredMixin):
     model=Menu
@@ -201,27 +208,18 @@ def trackordersview(request):
     if not request.user.is_authenticated or not request.user.is_customer:
         return redirect('/')
     return render(request=request, template_name="orderlist.html")
-def successorderview(request, q=None):
+
+def successorderview(request):
     if not request.user.is_authenticated or not request.user.is_customer:
         return redirect('/')
-    mitems=Menu.objects.filter(cart__customer_id=request.user).values('food_name', 'price', 'restaurant_id', 'cart')
-    itemlist={}
-    prices={}
-    for item in mitems:
-        if not itemlist.get(item['restaurant_id']):
-            itemlist[item['restaurant_id']]={}
-        c=Cart.objects.get(pk=item['cart'])
-        itemlist[item['restaurant_id']][item['food_name']]=c.quantity
-        if not prices.get(item['restaurant_id']):
-            prices[item['restaurant_id']]=0
-        prices[item['restaurant_id']]+=c.quantity*item['price']
-    for item in itemlist:
-        res=User.objects.get(restaurant__pk=item)
-        js=json.dumps(itemlist[item])
-        order=Orders.objects.create(order_id=q, customer_id=request.user, restaurant_id=res, items=js, total_price=int(prices[item]))
+    form=json.loads(request.body)
+    print(form)
+    for k in form:
+        res=User.objects.get(restaurant__pk=form[k]['rest_id'])
+        order=Orders.objects.create(order_id=k, restaurant_id=res, customer_id=request.user, items=form[k]['items'])
         order.save()
     Cart.objects.filter(customer_id=request.user).delete()
-    return render(request=request, template_name="successorder.html")
+    return JsonResponse({'message': "Order Successful!"})
 # def orderscompleteview(request, o=None, q=None):
 #     if not request.user.is_authenticated or not request.user.is_customer:
 #         return redirect('/')

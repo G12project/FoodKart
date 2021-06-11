@@ -73,7 +73,7 @@
         color: blue;
     }
     </style>
-
+</head>
 <body>
     <nav class="navbar background">
         <ul class="nav-list">
@@ -122,14 +122,15 @@
     </nav>
 {% block content %}
 <div style="padding-top:20px; padding-bottom:20px;">
-<form method="GET" action="/search" class="form-inline">
+<form method="GET" action="/home" class="form-inline">
     {%load crispy_forms_tags %}
     {{ search | crispy}}
     <button class="btn btn-primary"  type="submit">search</button>
     </form>
 </div>
-<div class="card-deck">
-    {% for food in object_list %}
+<div class="text-center" style="padding-bottom: 50px; padding-top:20px;"><h4>{{msg}}</h4></div>
+<div class="card-deck" style="padding-bottom:50px;">
+    {% for food in search_res %}
     <div class="card" style="max-width: 18rem; min-width: 18rem;">
         <img class="card-img-top" src="{{food.food_image.url}}" width="200" height="200" alt="Card image cap">
         <div class="card-body">
@@ -142,8 +143,20 @@
     </div>
     {% endfor %}
 </div>
-
-<div id="xyz">pqr</div>
+<div class="card-deck">
+    {% for food in menu_all %}
+    <div class="card" style="max-width: 18rem; min-width: 18rem;">
+        <img class="card-img-top" src="{{food.food_image.url}}" width="200" height="200" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">{{ food.food_name }}</h5>
+            <p class="card-text">{{ food.description }}</p>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted"><a href="detail/{{food.id}}">Click to View</a></small>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 </body>
 
 </html>

@@ -17,7 +17,6 @@ urlpatterns = [
 	path('detail/<int:pk>/', views.DetailFood.as_view(), name="detail"),
 	path('addcart/<int:pk>/<int:q>', views.additemview, name="addtocart"),
 	path('home', views.Home.as_view(), name='home'),
-	path('search', views.SearchFood.as_view(), name='Search'),
 	path('mycart', views.MyCart.as_view(), name='mycart'),
 	path('ordersummary', views.ordersummaryview, name='ordersummary'),
 	path('delhome', views.DelHome.as_view(), name='delhome'),
@@ -27,7 +26,7 @@ urlpatterns = [
 	path('orderlist', views.orderlist, name='orderlist'),
 	path('restordercheck/<str:q>', views.restcheckorderview, name='checkorder'),
 	path('trackorders', views.trackordersview, name='trackorders'),
-	path('successorder/<str:q>', views.successorderview, name='successorder'),
+	path('successorder', views.successorderview, name='successorder'),
 	path("logout/", views.logout_request, name= "logout"),
 	path('finishorder/<str:q>', views.finishorderview, name='finishorder'),
 
