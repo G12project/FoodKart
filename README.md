@@ -4,6 +4,7 @@
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
+* [Features](#features)
 * [Illustrations](#illustrations)
 * [Contributers](#contributers)
 
