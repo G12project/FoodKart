@@ -1,24 +1,50 @@
 # FoodKart
-## HOW TO RUN THIS PROJECT
-- Install Python(3.9.4)
-- Create a directory for the project and move to project folder in Terminal
-- Git clone this project https://github.com/G12project/FoodKart.git
-- Execute Following Commands 
-pip install -r requirements.txt
-py manage.py makemigrations
-py manage.py migrate
-py manage.py runserver
 
-- Now enter following URL in Your Browser Installed On Your Pc
+## Table of contents
+* [General info](#general-info)
+* [Technologies](#technologies)
+* [Setup](#setup)
+* [Illustrations](#illustrations)
+* [Contributers](#contributers)
 
-http://127.0.0.1:8000/
+## General info
+This is food aggregrator application (eg:-Uber eats,Swiggy) .The main application include search your favourite food,Add to Cart,Track your Orders in Real-time,check your past orders etc. 
+
+## Technologies
+Project is created with:
+* HTML,CSS,BOOTSTRAP
+* Django
+* Firebase
+
+## Setup Project
+To run this project, Clone this repo to your desktop:
+
+```
+$ pip install -r requirements.txt
+$ python manage.py runserver
+```
+
+## Features
+### For User
+- Sign/Signout
+- Search food
+- Add to cart
+- Track orders in Real-time
+### For Restaurants
+- Signin/Signout
+- Real-time updates on orders
+- Update Order status
+- Add,Delete and update Menu
+### For Delivery Exec
+- Signin/Signout
+- View Orders list under a range
+- Track the customer location
+
+## Illustrations
 
 
-# TO NOTICE
-- Html code in templates folder
+## Contributers
 
-## TO IGNORE
-- ignore _pycache_ files in the Folder
-
----
-# THANK YOU FOR READING #
+- Yash Bontala [Github repo](https://github.com/Yashbontala)
+- Jyotishna Baishya [Github repo](https://github.com/JyotishnaBaishya)
+- Amit Kumar [Github repo](https://github.com/amit295-cse)
