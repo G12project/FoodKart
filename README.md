@@ -16,7 +16,7 @@ Project is created with:
 * Django
 * Firebase
 
-## Setup Project
+## Setup
 To run this project, Clone this repo to your desktop:
 
 ```
