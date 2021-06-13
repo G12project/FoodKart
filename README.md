@@ -45,6 +45,6 @@ $ python manage.py runserver
 
 ## Contributers
 
-- Yash Bontala [Github repo](https://github.com/Yashbontala)
-- Jyotishna Baishya [Github repo](https://github.com/JyotishnaBaishya)
-- Amit Kumar [Github repo](https://github.com/amit295-cse)
+- [Yash Bontala](https://github.com/Yashbontala)
+- [Jyotishna Baishya](https://github.com/JyotishnaBaishya)
+- [Amit Kumar](https://github.com/amit295-cse)
