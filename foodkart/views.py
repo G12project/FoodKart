@@ -4,7 +4,7 @@ from django.contrib.auth import login, authenticate,  logout
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages #import messages
 from django.contrib.auth.forms import AuthenticationForm
-from django.db.models import Q
+from django.db.models import Q, Prefetch
 from .models import User, Menu, Cart, Customer, Restaurant, addresses, Orders
 from django.views.generic import ListView,DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, View
@@ -114,12 +114,6 @@ class Home( UserPassesTestMixin, ListView,LoginRequiredMixin):
             else:
                 con['msg']="Sorry! We could not find your dish :("
         return con
-    #  def get_queryset(self):
-    #     food = self.request.GET.get('search','')
-    #     if not Menu.objects.filter(food_name__icontains=food).exists():
-    #         return None
-    #     object_list=Menu.objects.filter(food_name__icontains=food)
-    #     return object_list
 
 class DelHome( UserPassesTestMixin, LoginRequiredMixin, View):
     template_name='homeDel.html'
@@ -165,6 +159,19 @@ class MyCart(UserPassesTestMixin, ListView, LoginRequiredMixin):
             object_list.append({'food_name':obj['food_name'], 'price': obj['price'], 'quantity':q.quantity})
         print(object_list)
         return object_list
+class PastOrderlist(UserPassesTestMixin, ListView,LoginRequiredMixin):
+    def test_func(self):
+        return self.request.user.is_customer
+    model=Orders
+    template_name='pastorders.html'
+    def get_queryset(self):
+        orders= Orders.objects.filter(customer_id=self.request.user).select_related('restaurant_id')
+        res=[]
+        for o in orders:
+            r=o.restaurant_id
+            res.append({'order_id': o.order_id,'rest_name': r.res_name,'items': (o.items)})
+        print(res)
+        return res
 def ordersummaryview(request):
     if not request.user.is_authenticated or not request.user.is_customer:
         return redirect('/')
@@ -215,33 +222,12 @@ def successorderview(request):
     form=json.loads(request.body)
     print(form)
     for k in form:
-        res=User.objects.get(restaurant__pk=form[k]['rest_id'])
+        res=Restaurant.objects.get(user=form[k]['rest_id'])
         order=Orders.objects.create(order_id=k, restaurant_id=res, customer_id=request.user, items=form[k]['items'])
         order.save()
     Cart.objects.filter(customer_id=request.user).delete()
     return JsonResponse({'message': "Order Successful!"})
-# def orderscompleteview(request, o=None, q=None):
-#     if not request.user.is_authenticated or not request.user.is_customer:
-#         return redirect('/')
-#     cust_id=request.user.pk
-#     items=Menu.objects.filter(cart__customer_id=request.user).values('food_name', 'price', 'restaurant_id', 'cart')
-#     print(items)
-#     restaurants={}
-#     for item in items:
-#         info['rest']=True
-#         if item['restaurant_id'] not in restaurants:
-#             restaurants[item['restaurant_id']]={}
-#             restaurants[item['restaurant_id']]['items']={}
-#             res=Restaurant.objects.get(pk=item['restaurant_id'])
-#             restaurants[item['restaurant_id']]['rest_name']=res.res_name
-#             restaurants[item['restaurant_id']]['pickuplat']=str(res.latitude)
-#             restaurants[item['restaurant_id']]['pickuplong']=str(res.longitude)
-#         c=Cart.objects.get(pk=item['cart'])
-#         restaurants[item['restaurant_id']]['items'][item['food_name']]={}
-#         restaurants[item['restaurant_id']]['items'][item['food_name']]['price']=item['price']*c.quantity
-#         restaurants[item['restaurant_id']]['items'][item['food_name']]['quantity']=c.quantity
-#     print(restaurants)
-#     return render(request=request, template_name="order.html", context={"info": info, "rests": restaurants})
+
 def finishorderview(request, q=None):
     if not request.user.is_authenticated or not request.user.is_delivery:
         return redirect('/')

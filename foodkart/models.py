@@ -61,7 +61,7 @@ class Menu(models.Model):
 
 class Orders(models.Model):
     order_id=models.CharField(max_length=300,default="XXX")
-    restaurant_id=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name="user1")
+    restaurant_id=models.ForeignKey(Restaurant,on_delete=models.CASCADE, related_name="user1")
     customer_id=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name="user2")
     exec_id=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name="user3", null=True)
     items=JSONField()

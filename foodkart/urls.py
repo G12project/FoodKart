@@ -11,6 +11,7 @@ urlpatterns = [
 	path('registerres/', views.RestaurantRegisterView.as_view(), name="resregister"),
 	path('registerdel/', views.DeliveryExecRegisterView.as_view(), name="delregister"),
 	path('resthome', views.Menulist.as_view(), name='menu_list'),
+	path('past_orders', views.PastOrderlist.as_view(), name='past_order_list'),
 	path('add', views.AddFood.as_view(), name='addfood'),
 	path('update/<int:pk>', views.UpdateFood.as_view(), name='updatefood'),
 	path('delete/<int:pk>', views.DeleteFood.as_view(), name='deletefood'),

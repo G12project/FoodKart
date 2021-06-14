@@ -11,7 +11,7 @@ query.on('value', function (snapshot) {
 				var os = data.val().curr_status;
 				console.log(os);
 				if (os == 0) {
-					content += "Order Placed Successfully";
+					content += "<h3>Order Placed Successfully</h3>";
 				}
 				else if (os == 1) {
 					content += "Confirmed";

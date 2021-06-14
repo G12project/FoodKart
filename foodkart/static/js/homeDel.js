@@ -19,7 +19,7 @@ function success(position) {
 	// query=events.orderByChild('rest_id');
 	var user_id = JSON.parse(document.getElementById('user_id').textContent);
 	var del = db.ref('DeliveryExec');
-	del.child(user_id).on('value', (snapshot)=>{
+	del.child(user_id).once('value', (snapshot)=>{
 		if(snapshot.exists()){
 			if(snapshot.val().is_busy==true){
 				var qry=events.orderByChild('del_id').equalTo(parseInt(user_id))
