@@ -6,10 +6,10 @@
 * [Setup](#setup)
 * [Features](#features)
 * [Illustrations](#illustrations)
-* [Contributers](#contributers)
+* [Contributers](#contributors)
 
 ## General info
-This is food aggregrator application (eg:-Uber eats,Swiggy) .The main application include search your favourite food,Add to Cart,Track your Orders in Real-time,check your past orders etc. 
+This is a food aggregrator application (eg:-Uber eats,Swiggy) .The main application includes features like search your favourite food, add to cart, Location tracking of your orders in real-time, check your past orders etc. 
 
 ## Technologies
 Project is created with:
@@ -27,10 +27,11 @@ $ python manage.py runserver
 
 ## Features
 ### For User
-- Sign/Signout
+- Signin/Signout
 - Search food
 - Add to cart
-- Track orders in Real-time
+- Place orders
+- Track order status and location in Real-time
 ### For Restaurants
 - Signin/Signout
 - Real-time updates on orders
@@ -39,12 +40,15 @@ $ python manage.py runserver
 ### For Delivery Exec
 - Signin/Signout
 - View Orders list under a range
-- Track the customer location
+- Track the own, restaurant and customer location location
 
 ## Illustrations
+![Alt text](/examples/eg1.jpg?raw=true)
+![Alt text](/examples/eg2.jpg?raw=true)
+![Alt text](/examples/eg3.jpg?raw=true)
+![Alt text](/examples/eg4.jpg?raw=true)
 
-
-## Contributers
+## Contributors
 
 - [Yash Bontala](https://github.com/Yashbontala)
 - [Jyotishna Baishya](https://github.com/JyotishnaBaishya)
