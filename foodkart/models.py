@@ -66,9 +66,10 @@ class Orders(models.Model):
     exec_id=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name="user3", null=True)
     items=JSONField()
     total_price=models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+
 class Cart(models.Model):
-    customer_id=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
-    item=models.ForeignKey(Menu, on_delete=models.CASCADE)
+    customer_id=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name='user')
+    item=models.ForeignKey(Menu, on_delete=models.CASCADE, related_name='menu')
     quantity=models.IntegerField(default=1)
 
 class addresses(models.Model):

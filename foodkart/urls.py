@@ -19,6 +19,7 @@ urlpatterns = [
 	path('addcart/<int:pk>/<int:q>', views.additemview, name="addtocart"),
 	path('home', views.Home.as_view(), name='home'),
 	path('mycart', views.MyCart.as_view(), name='mycart'),
+	path('<int:pk>/mycart', views.CartDelete.as_view(), name='deletecart'),
 	path('ordersummary', views.ordersummaryview, name='ordersummary'),
 	path('delhome', views.DelHome.as_view(), name='delhome'),
 	path('permittrack', views.permittrackview, name='permittrack'),

@@ -149,16 +149,22 @@ class MyCart(UserPassesTestMixin, ListView, LoginRequiredMixin):
     def test_func(self):
         return self.request.user.is_customer
     template_name="Cart.html"
-    model=Menu
+    model=Cart
     def get_queryset(self):
-        items=Menu.objects.filter(cart__customer_id=self.request.user).values('food_name', 'price', 'cart')
+        items=Cart.objects.filter(customer_id=self.request.user).select_related('item')
         print(items)
         object_list=[]
-        for obj in items:
-            q=Cart.objects.get(pk=obj['cart'])
-            object_list.append({'food_name':obj['food_name'], 'price': obj['price'], 'quantity':q.quantity})
+        for ob in items:
+            obj=ob.item
+            object_list.append({'food_name':obj.food_name, 'price': obj.price, 'quantity':ob.quantity, 'id': ob.pk})
         print(object_list)
         return object_list
+class CartDelete(UserPassesTestMixin, DeleteView, LoginRequiredMixin):
+    def test_func(self):
+        return self.request.user.is_customer
+    template_name="Cart.html"
+    model=Cart
+    success_url='/mycart'
 class PastOrderlist(UserPassesTestMixin, ListView,LoginRequiredMixin):
     def test_func(self):
         return self.request.user.is_customer
