@@ -20,8 +20,8 @@ Project is created with:
 ## Setup
 To run this project, Clone this repo to your desktop:
 
-- Create a firebase database and paste your credentials in [this file](./foodkart/static/firebase-example.js)
-- Rename  [this file](./foodkart/static/firebase-example.js) to 'firebase.js' 
+- Create a firebase database and paste your credentials in [this file](./foodkart/static/firebase-example.js?raw=true)
+- Rename  [this file](./foodkart/static/firebase-example.js?raw=true) to 'firebase.js' 
 - Execute the following commands from your command line/terminal:
 ```
 $ pip install -r requirements.txt
