@@ -56,3 +56,4 @@ $ python manage.py runserver
 - [Yash Bontala](https://github.com/Yashbontala)
 - [Jyotishna Baishya](https://github.com/JyotishnaBaishya)
 - [Amit Kumar](https://github.com/amit295-cse)
+- [Aniket Sethi](https://github.com/sanikeit)
