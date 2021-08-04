@@ -15,6 +15,7 @@ This is a food aggregrator application (eg:-Uber eats,Swiggy) .The main applicat
 Project is created with:
 * HTML,CSS,BOOTSTRAP
 * Django
+* Javascript
 * Firebase
 
 ## Setup
